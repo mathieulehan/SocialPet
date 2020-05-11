@@ -1,0 +1,62 @@
+<mat-grid-list cols="2" role="list" [rowHeight]="500">
+  <mat-grid-tile role="listitem">
+    <form [formGroup]="uploadedAnimal">
+      <mat-form-field>
+        <mat-label>Votre email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <mat-label>Espèce de votre animal</mat-label>
+        <mat-select [formControl]="specieControl">
+          <mat-option *ngFor="let specie of species" [value]="specie">
+            {{specie}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <mat-label>Race de votre animal</mat-label>
+        <input matInput formControlName="race">
+      </mat-form-field>
+      <br>
+
+      <h4>Mon animal possède ces :</h4>
+      <mat-form-field>
+        <mat-label>Couleur(s)</mat-label>
+        <mat-select [formControl]="colorControl" multiple>
+          <mat-option *ngFor="let color of colors" [value]="color">
+            {{color}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Disposées selon ce :</h4>
+      <mat-form-field>
+        <mat-label>Motif</mat-label>
+        <mat-select [formControl]="motifControl" multiple>
+          <mat-option *ngFor="let motif of motifs" [value]="motif">
+            {{motif}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Photos de mon animal :</h4>
+      <input class="ng-hide" id="input-file-id" multiple type="file" required />
+      <label for="input-file-id" class="md-button md-raised md-primary"></label>
+
+    </form>
+
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div style="text-align:center">
+      <h1>
+        {{ title }}
+      </h1>
+      <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
+      <p> {{ speech }}</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
