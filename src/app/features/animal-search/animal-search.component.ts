@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
@@ -15,27 +15,27 @@ export class AnimalSearchComponent implements OnInit {
   species: string[];
   colors: string[];
   motifs: string[];
-  formBuilder: FormBuilder;
-  uploadedAnimal: FormGroup;
-  specieControl: FormControl;
-  colorControl: FormControl;
-  motifControl: FormControl;
-
-  constructor() { }
+  uploadedAnimal = this.fb.group({
+    raceControl: [''],
+    specieControl: [''],
+    colorControl: [''],
+    motifControl: [''],
+    photosControl: ['', Validators.required]
+  });
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.species = Object.keys(Species);
     this.colors = Object.keys(Colors);
     this.motifs = Object.keys(Motifs);
-    this.formBuilder = new FormBuilder();
-    this.specieControl = new FormControl();
-    this.colorControl = new FormControl();
-    this.motifControl = new FormControl();
-    this.uploadedAnimal = this.formBuilder.group({
-      race: '',
-      subscriber: '',
-      email: '',
-    });
+  }
+
+  searchAnimal() {
+    console.warn(this.uploadedAnimal.value);
+  }
+
+  get photosControl() {
+    return this.uploadedAnimal.get('photosControl');
   }
 
 }

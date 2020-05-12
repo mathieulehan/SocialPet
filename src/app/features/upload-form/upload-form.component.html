@@ -1,62 +1,60 @@
 <mat-grid-list cols="2" role="list" [rowHeight]="500">
   <mat-grid-tile role="listitem">
-    <form [formGroup]="uploadedAnimal">
-      <mat-form-field>
-        <mat-label>Votre email</mat-label>
-        <input matInput formControlName="email">
-      </mat-form-field>
-      <br>
+    <mat-card>
+      <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="uploadAnimal()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Espèce de votre animal</mat-label>
+          <mat-error *ngIf="specieControl.invalid">L'espèce de votre animal doit être renseignée</mat-error>
+          <mat-select formControlName="specieControl">
+            <mat-option *ngFor="let specie of species" [value]="specie">
+              {{specie}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Race de votre animal</mat-label>
+          <input matInput formControlName="raceControl">
+          <mat-error *ngIf="raceControl.invalid">La race de votre animal doit être renseignée</mat-error>
+        </mat-form-field>          <mat-error *ngIf="specieControl.invalid">L'espèce de votre animal doit être renseignée</mat-error>
 
-      <mat-form-field>
-        <mat-label>Espèce de votre animal</mat-label>
-        <mat-select [formControl]="specieControl">
-          <mat-option *ngFor="let specie of species" [value]="specie">
-            {{specie}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br>
-
-      <mat-form-field>
-        <mat-label>Race de votre animal</mat-label>
-        <input matInput formControlName="race">
-      </mat-form-field>
-      <br>
-
-      <h4>Mon animal possède ces :</h4>
-      <mat-form-field>
-        <mat-label>Couleur(s)</mat-label>
-        <mat-select [formControl]="colorControl" multiple>
-          <mat-option *ngFor="let color of colors" [value]="color">
-            {{color}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <h4>Disposées selon ce :</h4>
-      <mat-form-field>
-        <mat-label>Motif</mat-label>
-        <mat-select [formControl]="motifControl" multiple>
-          <mat-option *ngFor="let motif of motifs" [value]="motif">
-            {{motif}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <h4>Photos de mon animal :</h4>
-      <input class="ng-hide" id="input-file-id" multiple type="file" required />
-      <label for="input-file-id" class="md-button md-raised md-primary"></label>
-
-    </form>
-
+        <br>
+        <h4>Mon animal possède ces :</h4>
+        <mat-form-field class="example-full-width">
+          <mat-label>Couleur(s)</mat-label>
+          <mat-select formControlName="colorControl" multiple>
+            <mat-option *ngFor="let color of colors" [value]="color">
+              {{color}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="colorControl.invalid">La couleur de votre animal doit être renseignée</mat-error>
+        </mat-form-field>
+        <h4>Disposées selon ce :</h4>
+        <mat-form-field class="example-full-width">
+          <mat-label>Motif</mat-label>
+          <mat-select formControlName="motifControl" multiple>
+            <mat-option *ngFor="let motif of motifs" [value]="motif">
+              {{motif}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="motifControl.invalid">Le motif de votre animal doit être renseigné</mat-error>
+        </mat-form-field>
+        <h4>Photos de mon animal :</h4>
+        <input class="ng-hide" id="input-file-id" multiple type="file" required formControlName="photosControl" />
+        <label for="input-file-id" class="md-button md-raised md-primary"></label>
+        <mat-error *ngIf="photosControl.invalid">Au moins une photo de l'animal doit être envoyée</mat-error>
+        <br><br>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Enregistrer mon animal</button>
+      </form>
+    </mat-card>
   </mat-grid-tile>
   <mat-grid-tile>
-    <div style="text-align:center">
-      <h1>
-        {{ title }}
-      </h1>
-      <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
-      <p> {{ speech }}</p>
-    </div>
+    <mat-card>
+      <mat-card-title>{{ title }}</mat-card-title>
+      <mat-card-content>
+        <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
+        <p> {{ speech }}</p>
+      </mat-card-content>
+    </mat-card>
   </mat-grid-tile>
 </mat-grid-list>

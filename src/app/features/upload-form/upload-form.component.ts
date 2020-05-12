@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-upload-form',
@@ -16,24 +16,37 @@ export class UploadFormComponent implements OnInit {
   species: string[];
   colors: string[];
   motifs: string[];
-  formBuilder: FormBuilder;
-  uploadedAnimal: FormGroup;
-  specieControl: FormControl;
-  colorControl: FormControl;
-  motifControl: FormControl;
 
+  uploadedAnimal = this.fb.group({
+    raceControl: ['', Validators.required],
+    specieControl: ['', Validators.required],
+    colorControl: ['', Validators.required],
+    motifControl: ['', Validators.required],
+    photosControl: ['', Validators.required]
+  });
+  constructor(private fb: FormBuilder) {
+  }
   ngOnInit(): void {
     this.species = Object.keys(Species);
     this.colors = Object.keys(Colors);
     this.motifs = Object.keys(Motifs);
-    this.formBuilder = new FormBuilder();
-    this.specieControl = new FormControl();
-    this.colorControl = new FormControl();
-    this.motifControl = new FormControl();
-    this.uploadedAnimal = this.formBuilder.group({
-      race: '',
-      subscriber: '',
-      email: '',
-    });
+  }
+
+  uploadAnimal() {
+  }
+  get raceControl() {
+    return this.uploadedAnimal.get('raceControl');
+  }
+  get specieControl() {
+    return this.uploadedAnimal.get('specieControl');
+  }
+  get colorControl() {
+    return this.uploadedAnimal.get('colorControl');
+  }
+  get motifControl() {
+    return this.uploadedAnimal.get('motifControl');
+  }
+  get photosControl() {
+    return this.uploadedAnimal.get('photosControl');
   }
 }

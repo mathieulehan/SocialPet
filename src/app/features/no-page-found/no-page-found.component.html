@@ -1,14 +1,12 @@
-<div class="col-md-12">
-  <div class="error-template">
-    <h3>Oops!</h3>
-    <h2>404 Not Found</h2>
-    <div class="error-details mb-3">
-      Sorry, Requested page not found!
-    </div>
-    <div class="error-actions">
-      <a routerLink="/home" class="btn btn-danger btn-lg">
-        Go Back to Home
-      </a>
-    </div>
-  </div>
-</div>
+<mat-card>
+  <mat-card-title>Oupsi !</mat-card-title>
+  <mat-card-subtitle>404 Page introuvable</mat-card-subtitle>
+  <mat-card-content>
+    Désolé, la page demandée est introuvable !
+  </mat-card-content>
+  <mat-card-actions>
+    <a routerLink="/" mat-button>
+      Retourner à la page d'accueil
+    </a>
+  </mat-card-actions>
+</mat-card>

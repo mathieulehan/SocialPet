@@ -5,12 +5,17 @@ import { AnimalSearchComponent } from './features/animal-search/animal-search.co
 import { UploadFormComponent } from './features/upload-form/upload-form.component';
 import { NoPageFoundComponent } from './features/no-page-found/no-page-found.component';
 import { HomeComponent } from './features/home/home.component';
+import {AboutUsComponent} from './features/about-us/about-us.component';
+import {LegalComponent} from './features/legal/legal.component';
+import {ConnectionComponent} from './features/connection/connection.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'search', component: AnimalSearchComponent },
   { path: 'submit', component: UploadFormComponent },
+  { path: 'about', component: AboutUsComponent },
+  { path: 'legal', component: LegalComponent },
+  { path: 'connect', component: ConnectionComponent },
   { path: '**', component: NoPageFoundComponent }
 ];
 

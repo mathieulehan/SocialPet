@@ -3,5 +3,35 @@
   top: 0;
   bottom: 0;
   left: 0;
-  right: 8;
+  width: fit-content;
+}
+
+mat-toolbar {
+  height: 5vh;
+}
+
+.social-pet-body {
+  height: 95vh;
+}
+
+.connectButton {
+  margin-left: 85vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+mat-card {
+  margin-top: 15vm !important;
+}
+
+.example-form {
+  min-width: 150px !important;
+  max-width: 500px !important;
+  width: 100% !important;
+}
+
+.example-full-width {
+  width: 100% !important;
 }
