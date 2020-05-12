@@ -7,5 +7,6 @@ export class ImageList {
 export class Image {
   id: number;
   img: string;
+  email?: string;
   sanitizedPath?: SafeResourceUrl;
 }
