@@ -18,6 +18,9 @@ export class AnimalSearchComponent implements OnInit {
   motifs: string[];
   img: string;
   imagePath: SafeResourceUrl;
+  generatedBlobs: string[] = [];
+  generatedBlobsDecoded: string[] = [];
+  selectedFilesNames: string[] = [];
   uploadedAnimal = this.fb.group({
     raceControl: [''],
     specieControl: [''],
@@ -41,6 +44,23 @@ export class AnimalSearchComponent implements OnInit {
 
   get photosControl() {
     return this.uploadedAnimal.get('photosControl');
+  }
+
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const files: FileList = inputValue.files;
+    Array.from(files).forEach(file => {
+      const myReader: FileReader = new FileReader();
+      myReader.onloadend = (e) => {
+        this.generatedBlobs.push(myReader.result as string);
+        this.generatedBlobsDecoded.push(this.sanitizer.bypassSecurityTrustResourceUrl(myReader.result as string) as string);
+      };
+      this.selectedFilesNames.push(file.name);
+      myReader.readAsDataURL(file);
+    });
   }
 
 }

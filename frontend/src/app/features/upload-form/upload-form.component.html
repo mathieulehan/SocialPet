@@ -16,8 +16,7 @@
           <mat-label>Race de votre animal</mat-label>
           <input matInput formControlName="raceControl">
           <mat-error *ngIf="raceControl.invalid">La race de votre animal doit être renseignée</mat-error>
-        </mat-form-field>          <mat-error *ngIf="specieControl.invalid">L'espèce de votre animal doit être renseignée</mat-error>
-
+        </mat-form-field>
         <br>
         <h4>Mon animal possède ces :</h4>
         <mat-form-field class="example-full-width">
@@ -40,8 +39,10 @@
           <mat-error *ngIf="motifControl.invalid">Le motif de votre animal doit être renseigné</mat-error>
         </mat-form-field>
         <h4>Photos de mon animal :</h4>
-        <input class="ng-hide" id="input-file-id" multiple type="file" required formControlName="photosControl" />
-        <label for="input-file-id" class="md-button md-raised md-primary"></label>
+        <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
+        <div *ngFor="let blob of generatedBlobsDecoded">
+          <img width="32" [src]="blob" alt="blob">
+        </div>
         <mat-error *ngIf="photosControl.invalid">Au moins une photo de l'animal doit être envoyée</mat-error>
         <br><br>
         <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Enregistrer mon animal</button>

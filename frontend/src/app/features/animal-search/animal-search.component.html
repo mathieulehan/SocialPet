@@ -35,8 +35,10 @@
           </mat-select>
         </mat-form-field>
         <h4>Photos de l'animal en question :</h4>
-        <input class="ng-hide" id="input-file-id" multiple type="file" formControlName="photosControl" required/>
-        <label for="input-file-id" class="mat-raised-button"></label>
+        <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
+        <div *ngFor="let blob of generatedBlobsDecoded">
+          <img width="32" [src]="blob" alt="blob">
+        </div>
         <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
         <br><br>
         <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>

@@ -1,3 +1,3 @@
 export enum Species {
-    Chat, Chien, Cheval, Poule, Lapin
+    Chat = 'Chat', Chien = 'Chien', Cheval = 'Cheval', Poule = 'Poule', Lapin = 'Lapin'
 }

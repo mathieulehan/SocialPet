@@ -15,9 +15,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { LegalComponent } from './legal/legal.component';
-import {MatCardModule} from "@angular/material/card";
+import {MatCardModule} from '@angular/material/card';
 import { ConnectionComponent } from './connection/connection.component';
-import {MatTabsModule} from "@angular/material/tabs";
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
     imports: [

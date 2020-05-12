@@ -3,6 +3,7 @@ import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
 import {FormBuilder, Validators} from '@angular/forms';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-upload-form',
@@ -16,7 +17,11 @@ export class UploadFormComponent implements OnInit {
   species: string[];
   colors: string[];
   motifs: string[];
-
+  test: any;
+  image: string | ArrayBuffer;
+  generatedBlobs: string[] = [];
+  generatedBlobsDecoded: string[] = [];
+  selectedFilesNames: string[] = [];
   uploadedAnimal = this.fb.group({
     raceControl: ['', Validators.required],
     specieControl: ['', Validators.required],
@@ -24,7 +29,7 @@ export class UploadFormComponent implements OnInit {
     motifControl: ['', Validators.required],
     photosControl: ['', Validators.required]
   });
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer) {
   }
   ngOnInit(): void {
     this.species = Object.keys(Species);
@@ -48,5 +53,22 @@ export class UploadFormComponent implements OnInit {
   }
   get photosControl() {
     return this.uploadedAnimal.get('photosControl');
+  }
+
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const files: FileList = inputValue.files;
+    Array.from(files).forEach(file => {
+      const myReader: FileReader = new FileReader();
+      myReader.onloadend = (e) => {
+        this.generatedBlobs.push(myReader.result as string);
+        this.generatedBlobsDecoded.push(this.sanitizer.bypassSecurityTrustResourceUrl(myReader.result as string) as string);
+      };
+      this.selectedFilesNames.push(file.name);
+      myReader.readAsDataURL(file);
+    });
   }
 }
