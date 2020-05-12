@@ -1,4 +1,4 @@
-<mat-grid-list cols="2" role="list" [rowHeight]="500">
+<mat-grid-list cols="2" role="list" [rowHeight]="700">
   <mat-grid-tile role="listitem">
     <mat-card>
       <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="searchAnimal()">
@@ -50,6 +50,11 @@
         <img width="540" alt="Upload pet image" src="../../../assets/lost_cat.jpg">
         <p> {{ speech }}</p>
       </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <img [src]="imagePath" alt="found animal">
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
