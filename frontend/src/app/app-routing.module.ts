@@ -8,6 +8,7 @@ import { HomeComponent } from './features/home/home.component';
 import {AboutUsComponent} from './features/about-us/about-us.component';
 import {LegalComponent} from './features/legal/legal.component';
 import {ConnectionComponent} from './features/connection/connection.component';
+import {ShowAllImagesComponent} from './features/show-all-images/show-all-images.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'about', component: AboutUsComponent },
   { path: 'legal', component: LegalComponent },
   { path: 'connect', component: ConnectionComponent },
+  { path: 'images', component: ShowAllImagesComponent },
   { path: '**', component: NoPageFoundComponent }
 ];
 

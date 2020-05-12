@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Image, ImageList} from '../image';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
-
+  baseUrl = 'http://localhost:5000/api/';
   constructor(private http: HttpClient) { }
 
   saveAnimal(animal: any): Observable<object> {
-    return this.http.post('/image', animal);
+    return this.http.post(this.baseUrl + 'image', animal);
   }
 
-  getAllImages(): Observable<object> {
-    return this.http.get('/images');
+  getAllImages(): Observable<ImageList> {
+    return this.http.get<ImageList>(this.baseUrl + 'images');
   }
 
   getRelatedImages(animal: any): Observable<object> {
-    return this.http.post('/perdu', animal);
+    return this.http.post(this.baseUrl + 'perdu', animal);
   }
 
 }

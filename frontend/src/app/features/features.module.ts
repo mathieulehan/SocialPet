@@ -18,6 +18,7 @@ import { LegalComponent } from './legal/legal.component';
 import {MatCardModule} from '@angular/material/card';
 import { ConnectionComponent } from './connection/connection.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {ShowAllImagesComponent} from './show-all-images/show-all-images.component';
 
 @NgModule({
     imports: [
@@ -35,7 +36,7 @@ import {MatTabsModule} from '@angular/material/tabs';
         MatTabsModule
     ],
   declarations : [
-    AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent, ConnectionComponent
+    AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent, ConnectionComponent, ShowAllImagesComponent
   ]
 })
 export class FeaturesModule { }
