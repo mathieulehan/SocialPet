@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request, abort
+from flask_cors import CORS
 import database
 import model
 import base64
 
 app = Flask(__name__)
-
+# Pour que le front puisse utiliser l'API
+cors = CORS(app)
 # Retourne tout les utilisateurs inscrits
 @app.route('/api/users', methods=['GET'])
 def get_users():
