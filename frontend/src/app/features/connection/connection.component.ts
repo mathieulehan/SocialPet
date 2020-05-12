@@ -41,7 +41,7 @@ export class ConnectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm.controls.passwordControl.valueChanges.subscribe(() => {
-      this.registerForm.controls.confirmPasswordControl.updateValueAndValidity();
+      this.registerForm.controls.passwordConfirmControl.updateValueAndValidity();
     });
   }
 }
