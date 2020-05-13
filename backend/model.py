@@ -40,5 +40,3 @@ def get_espece(file):
 
     espece =  CATEGORIES[indice[0][0]]
     return espece
-
-
