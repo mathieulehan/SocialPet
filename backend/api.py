@@ -1,9 +1,11 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, make_response
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import database
 import model
 import base64
+import utils
+import os
 
 app = Flask(__name__)
 # Pour hash le password
@@ -11,6 +13,12 @@ bcrypt = Bcrypt(app)
 # Pour que le front puisse utiliser l'API
 cors = CORS(app)
 
+# Conf environnement
+app_settings = os.getenv(
+    'APP_SETTINGS',
+    'config.DevelopmentConfig'
+)
+app.config.from_object(app_settings)
 
 # Retourne tout les utilisateurs inscrits
 @app.route('/api/users', methods=['GET'])
@@ -91,4 +99,18 @@ def log_user():
     password = request.json['password']
 
     result = database.logIn(email, password)
-    return jsonify({'item': result}), 200
+    auth_token = utils.encode_auth_token(result['id'])
+    print(auth_token)
+    if auth_token:
+        response = {
+            'status': 'success',
+            'message': 'Connexion réussie.',
+            'auth_token': auth_token.decode()
+        }
+        return make_response(jsonify(response)), 200
+    else:
+        response = {
+        'status': 'fail',
+        'message': 'L\'utilisateur n\'existe pas.'
+    }
+    return make_response(jsonify(response)), 404
