@@ -1,22 +1,39 @@
 import { Injectable } from '@angular/core';
 import {User} from '../models/user';
 import { BehaviorSubject } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor() { }
+  private BASE_URL = 'http://localhost:5000/api/auth';
 
-  public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(localStorage.getItem('ACCESS_TOKEN') !== null);
+  constructor(private http: HttpClient) { }
 
-  public signIn(userData: User) {
-    localStorage.setItem('ACCESS_TOKEN', 'access_token');
-    this.isLoggedIn.next(true);
+  login(user: User): Promise<any> {
+    const url = `${this.BASE_URL}/login`;
+    return this.http.post(url, user).toPromise();
+  }
+  register(user: User): Promise<any> {
+    const url = `${this.BASE_URL}/register`;
+    return this.http.post(url, user).toPromise();
   }
 
   public logout() {
     localStorage.removeItem('ACCESS_TOKEN');
-    this.isLoggedIn.next(false);
+  }
+
+  isLoggedIn() {
+    return localStorage.getItem('ACCESS_TOKEN') !== null;
+  }
+
+  ensureAuthenticated(token): Promise<any> {
+    const url = `${this.BASE_URL}/status`;
+    const reqHeaders: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.get(url, { headers: reqHeaders }).toPromise();
   }
 }

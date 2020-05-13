@@ -144,6 +144,36 @@ def retrieveUser(email):
     return listusers[0]['id']
 
 
+def retrieveUserById(user_id):
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = 'SELECT * FROM socialpet_users where id = %s'
+    cursor = db.cursor()
+    try:
+        cursor.execute(sql, (user_id,))
+        result = cursor.fetchone()
+        user = {
+            "id": result[0],
+            "name": result[1],
+            "lastname": result[2],
+            "email": result[3],
+            "password": result[4],
+            "created_at": result[5]
+        }
+        print(user)
+    except MySQLdb.Error as e:
+        try:
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    return user
+
+
 def createUser(name, lastname, email, password):
     hashedPassword = api.bcrypt.generate_password_hash(password, 13).decode()
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")

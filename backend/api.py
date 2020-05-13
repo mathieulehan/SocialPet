@@ -75,7 +75,7 @@ def get_perdu():
 
 
 # Création d'un compte utilisateur
-@app.route('/api/auth/signin', methods=['POST'])
+@app.route('/api/auth/register', methods=['POST'])
 def create_user():
     if not request.json or not 'email' in request.json:
         abort(400)
@@ -114,3 +114,46 @@ def log_user():
         'message': 'L\'utilisateur n\'existe pas.'
     }
     return make_response(jsonify(response)), 404
+
+# Vérification de la validité du token fourni
+@app.route('/api/auth/status', methods=['GET'])
+def get_status():
+    # get the auth token
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        try:
+            auth_token = auth_header.split(" ")[1]
+        except IndexError:
+            responseObject = {
+                'status': 'fail',
+                'message': 'Bearer token malformed.'
+            }
+            return make_response(jsonify(responseObject)), 401
+    else:
+        auth_token = ''
+    if auth_token:
+        resp = utils.decode_auth_token(auth_token)
+        if not isinstance(resp, str):
+            user = database.retrieveUserById(resp)
+            responseObject = {
+                'status': 'success',
+                'data': {
+                    'user_id': user['id'],
+                    'email': user['email'],
+                    'name': user['name'],
+                    'lastname': user['lastname'],
+                    'created_at': user['created_at']
+                }
+            }
+            return make_response(jsonify(responseObject)), 200
+        responseObject = {
+            'status': 'fail',
+            'message': resp
+        }
+        return make_response(jsonify(responseObject)), 401
+    else:
+        responseObject = {
+            'status': 'fail',
+            'message': 'Provide a valid auth token.'
+        }
+        return make_response(jsonify(responseObject)), 401
