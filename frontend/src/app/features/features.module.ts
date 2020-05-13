@@ -19,24 +19,35 @@ import {MatCardModule} from '@angular/material/card';
 import { ConnectionComponent } from './connection/connection.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {ShowAllImagesComponent} from './show-all-images/show-all-images.component';
+import {AuthComponent} from './auth/auth.component';
+import {AdminComponent} from './admin/admin.component';
+import {MatToolbarComponent} from './mat-toolbar/mat-toolbar.component';
+import {AuthService} from '../shared/services/auth.service';
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        BrowserAnimationsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatGridListModule,
-        MatCardModule,
-        MatTabsModule
-    ],
-  declarations : [
-    AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent, ConnectionComponent, ShowAllImagesComponent
-  ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatCardModule,
+    MatTabsModule,
+    MatToolbarModule
+  ],
+  declarations: [
+    AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
+    ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent
+  ],
+  exports: [
+    MatToolbarComponent
+  ],
+  providers: [AuthService]
 })
 export class FeaturesModule { }

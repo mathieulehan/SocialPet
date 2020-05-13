@@ -13,11 +13,12 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 import {MatButtonModule} from '@angular/material/button';
+import { MatSidenavComponent } from './features/mat-sidenav/mat-sidenav.component';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    MatSidenavComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

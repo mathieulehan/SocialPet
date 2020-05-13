@@ -1,0 +1,5 @@
+<mat-toolbar color="primary">
+  Social Pets
+  <button *ngIf="!userIsConnected" mat-button class="connectButton" [routerLink]="['/connect']" skipLocationChange routerLinkActive="active">Se connecter</button>
+  <button *ngIf="userIsConnected" mat-button class="connectButton" (click)="logOut()">Se déconnecter</button>
+</mat-toolbar>

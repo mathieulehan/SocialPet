@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AuthService} from '../../shared/services/auth.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-connection',
@@ -7,19 +9,11 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, 
   styleUrls: ['./connection.component.scss']
 })
 export class ConnectionComponent implements OnInit {
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
   }
-  connectForm = this.fb.group({
-    emailControl: ['', Validators.required],
-    passwordControl: ['', Validators.required]
-  });
-  registerForm = this.fb.group({
-    nameControl: ['', Validators.required],
-    lastNameControl: ['', Validators.required],
-    emailControl: ['', Validators.required],
-    passwordControl: ['', Validators.required],
-    passwordConfirmControl: ['', [Validators.required, ConnectionComponent.matchValues('passwordControl')]]
-  });
+  connectForm: FormGroup;
+  registerForm: FormGroup;
+  isSubmitted  =  false;
 
   public static matchValues(
     matchTo: string // name of the control to match to
@@ -33,13 +27,38 @@ export class ConnectionComponent implements OnInit {
     };
   }
 
+  ngOnInit(): void {
+    this.initConnectForm();
+    this.initRegisterForm();
+  }
+
   connect() {
+    this.isSubmitted = true;
+    if (this.connectForm.invalid) {
+      return;
+    }
+    this.authService.signIn(this.connectForm.value);
+    this.router.navigateByUrl('');
   }
 
   register() {
   }
 
-  ngOnInit(): void {
+  private initConnectForm() {
+    this.connectForm = this.fb.group({
+      emailControl: ['', Validators.required],
+      passwordControl: ['', Validators.required]
+    });
+  }
+
+  private initRegisterForm() {
+    this.registerForm = this.fb.group({
+      nameControl: ['', Validators.required],
+      lastNameControl: ['', Validators.required],
+      emailControl: ['', Validators.required],
+      passwordControl: ['', Validators.required],
+      passwordConfirmControl: ['', [Validators.required, ConnectionComponent.matchValues('passwordControl')]]
+    });
     this.registerForm.controls.passwordControl.valueChanges.subscribe(() => {
       this.registerForm.controls.passwordConfirmControl.updateValueAndValidity();
     });

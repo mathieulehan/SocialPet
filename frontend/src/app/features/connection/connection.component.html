@@ -1,4 +1,29 @@
 <mat-tab-group>
+  <mat-tab label="Se connecter">
+    <mat-card>
+      <mat-card-title>Se connecter</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="connectForm" (ngSubmit)="connect()">
+          <p>
+            <mat-form-field>
+              <input type="text" matInput placeholder="Email" formControlName="emailControl">
+            </mat-form-field>
+          </p>
+
+          <p>
+            <mat-form-field>
+              <input type="password" matInput placeholder="Mot de passe" formControlName="passwordControl">
+            </mat-form-field>
+          </p>
+
+          <div class="button">
+            <button type="submit" mat-button>Se connecter</button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
   <mat-tab label="S'inscrire">
     <mat-card>
       <mat-card-title>S'inscrire</mat-card-title>
@@ -32,31 +57,6 @@
 
           <div class="button">
             <button type="submit" mat-button>S'inscrire</button>
-          </div>
-
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </mat-tab>
-  <mat-tab label="Se connecter">
-    <mat-card>
-      <mat-card-title>Se connecter</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="connectForm" (ngSubmit)="connect()">
-          <p>
-            <mat-form-field>
-              <input type="text" matInput placeholder="Email" formControlName="emailControl">
-            </mat-form-field>
-          </p>
-
-          <p>
-            <mat-form-field>
-              <input type="password" matInput placeholder="Mot de passe" formControlName="passwordControl">
-            </mat-form-field>
-          </p>
-
-          <div class="button">
-            <button type="submit" mat-button>Se connecter</button>
           </div>
 
         </form>

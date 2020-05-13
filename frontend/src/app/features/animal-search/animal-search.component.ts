@@ -5,7 +5,7 @@ import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ImageService} from '../../shared/services/image.service';
-import {Image} from '../../shared/image';
+import {Image} from '../../shared/models/image';
 
 @Component({
   selector: 'app-animal-search',

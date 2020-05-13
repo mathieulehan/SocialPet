@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ImageService} from '../../shared/services/image.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Image} from '../../shared/image';
+import {Image} from '../../shared/models/image';
 
 @Component({
   selector: 'app-show-all-images',
