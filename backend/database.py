@@ -1,5 +1,6 @@
 import MySQLdb
 
+
 global resultsExportUsers
 resultsExportUsers = []
 
@@ -35,14 +36,30 @@ def getUsers():
             db.close()
 
 # store picture past in request
-def storeImagePet(img, table, email) :
+def storeImagePet(img, table, email, data) :
+    
     idUser = retrieveUser(email)
+    if(idUser == None) :
+        item = {
+            "error" : "utilisateur inexistant"
+        }
+        return item
+        
+
+    idRace = retrieveRace(data['race'])
+    if(idRace == None) :
+        idRace = insertTable(data['race'], "race", "race")
+    
+    idCouleur = retrieveCouleur(data['couleur'])
+    if(idCouleur == None) :
+        idCouleur = insertTable(data['couleur'], "socialpet_couleur", "couleur")
+
     print(idUser)
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "INSERT INTO " + table + "(img, idUser) VALUES (%s, %s)"
+    sql = "INSERT INTO " + table + "(img, idUser, idCouleur, idRace) VALUES (%s, %s, %s, %s)"
     cursor = db.cursor()
     try :
-        result = cursor.execute(sql, [img, idUser])
+        result = cursor.execute(sql, [img, idUser, idCouleur, idRace])
         db.commit()
         item = {
             "id" : cursor.lastrowid,
@@ -136,5 +153,91 @@ def retrieveUser(email) :
             cursor.close()
             db.close()
 
-    return listusers[0]['id']
+    if not listusers :
+        return None
+    else :
+        return listusers[0]['id']
+
+def retrieveCouleur(couleur) :
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = "SELECT id FROM socialpet_couleur where couleur = \"" + couleur + "\""
+    cursor = db.cursor()
+    listcouleur = []
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            item = {
+                "id": row[0]
+            }
+            listcouleur.append(item)
+
+    except MySQLdb.Error as e:
+        try:
+            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print ("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    if not listcouleur :
+        return None
+    else :
+        return listcouleur[0]['id']
+
+def retrieveRace(race) :
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = "SELECT id FROM race where race = \"" + race + "\""
+    cursor = db.cursor()
+    listrace = []
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            item = {
+                "id": row[0]
+            }
+            listrace.append(item)
+
+    except MySQLdb.Error as e:
+        try:
+            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print ("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    if not listrace :
+        return None
+    else :
+        return listrace[0]['id']
+
+def insertTable(data, table, colonne) :
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = "INSERT INTO " + table + "(" + colonne + ") VALUES (\"" + data + "\")" 
+    print(sql)
+    cursor = db.cursor()
+    listcouleur = []
+    try:
+        result = cursor.execute(sql)
+        db.commit()
+
+    except MySQLdb.Error as e:
+        try:
+            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print ("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    return cursor.lastrowid
 

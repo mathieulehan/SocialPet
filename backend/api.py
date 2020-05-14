@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, abort
 import database
 import model
 import base64
+import json
 
 app = Flask(__name__)
 
@@ -34,7 +35,7 @@ def insert_image():
     image_result.write(image_64_decode)
 
     espece = model.get_espece('./img_temp.jpg')
-    item = database.storeImagePet(image_base64_utf8, espece, request.json['email'])
+    item = database.storeImagePet(image_base64_utf8, espece, request.json['email'], request.json['data'])
 
     return jsonify({'item' : item}), 201
 
