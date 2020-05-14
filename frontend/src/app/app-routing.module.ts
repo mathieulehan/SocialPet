@@ -8,14 +8,23 @@ import { HomeComponent } from './features/home/home.component';
 import {AboutUsComponent} from './features/about-us/about-us.component';
 import {LegalComponent} from './features/legal/legal.component';
 import {ConnectionComponent} from './features/connection/connection.component';
+import {ShowAllImagesComponent} from './features/show-all-images/show-all-images.component';
+import {AuthComponent} from './features/auth/auth.component';
+import {AdminComponent} from './features/admin/admin.component';
+import {EnsureAuthenticated} from './shared/services/ensure-authentificated.service';
+import {LoginRedirectService} from './shared/services/login-redirect.service';
+import {AuthService} from './shared/services/auth.service';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'search', component: AnimalSearchComponent },
-  { path: 'submit', component: UploadFormComponent },
+  { path: 'search', component: AnimalSearchComponent, canActivate: [EnsureAuthenticated] },
+  { path: 'submit', component: UploadFormComponent, canActivate: [EnsureAuthenticated] },
   { path: 'about', component: AboutUsComponent },
   { path: 'legal', component: LegalComponent },
-  { path: 'connect', component: ConnectionComponent },
+  { path: 'login', component: ConnectionComponent, canActivate: [LoginRedirectService] },
+  { path: 'images', component: ShowAllImagesComponent, canActivate: [EnsureAuthenticated] },
+  { path: 'auth', component: AuthComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [EnsureAuthenticated] },
   { path: '**', component: NoPageFoundComponent }
 ];
 
@@ -24,6 +33,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forRoot(routes)
+  ],
+  providers: [
+    AuthService, LoginRedirectService, EnsureAuthenticated
   ]
 })
 export class AppRoutingModule { }

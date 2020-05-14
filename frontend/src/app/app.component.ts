@@ -1,14 +1,16 @@
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import {MediaMatcher} from "@angular/cdk/layout";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {MediaMatcher} from '@angular/cdk/layout';
+import {AuthService} from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./styles/app.component.scss']
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Social Pet';
   mobileQuery: MediaQueryList;
+  userIsConnected = false;
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
@@ -21,7 +23,7 @@ export class AppComponent implements OnDestroy {
 
   private readonly mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this.mobileQueryListener);
@@ -29,5 +31,8 @@ export class AppComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this.mobileQueryListener);
+  }
+
+  ngOnInit(): void {
   }
 }
