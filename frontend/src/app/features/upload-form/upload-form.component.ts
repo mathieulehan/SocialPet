@@ -4,6 +4,8 @@ import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
 import {FormBuilder, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
 
 @Component({
   selector: 'app-upload-form',
@@ -29,7 +31,7 @@ export class UploadFormComponent implements OnInit {
     motifControl: ['', Validators.required],
     photosControl: ['', Validators.required]
   });
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer) {
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog) {
   }
   ngOnInit(): void {
     this.species = Object.keys(Species);
@@ -38,6 +40,11 @@ export class UploadFormComponent implements OnInit {
   }
 
   uploadAnimal() {
+    const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
+      panelClass: 'transparent',
+      disableClose: true
+    });
+    dialogRef.close();
   }
   get raceControl() {
     return this.uploadedAnimal.get('raceControl');

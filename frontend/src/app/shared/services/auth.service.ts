@@ -8,6 +8,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 })
 export class AuthService {
   private BASE_URL = 'http://localhost:5000/api/auth';
+  public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) { }
 
@@ -22,10 +23,7 @@ export class AuthService {
 
   public logout() {
     localStorage.removeItem('ACCESS_TOKEN');
-  }
-
-  isLoggedIn() {
-    return localStorage.getItem('ACCESS_TOKEN') !== null;
+    this.isLoggedIn.next(false);
   }
 
   ensureAuthenticated(token): Promise<any> {
@@ -34,6 +32,10 @@ export class AuthService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    return this.http.get(url, { headers: reqHeaders }).toPromise();
+    const response = this.http.get<any>(url, { headers: reqHeaders }).toPromise();
+    response.then(user => {
+      this.isLoggedIn.next(user.status === 'success');
+    });
+    return response;
   }
 }

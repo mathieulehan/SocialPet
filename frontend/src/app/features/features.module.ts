@@ -23,7 +23,13 @@ import {AuthComponent} from './auth/auth.component';
 import {AdminComponent} from './admin/admin.component';
 import {MatToolbarComponent} from './mat-toolbar/mat-toolbar.component';
 import {AuthService} from '../shared/services/auth.service';
-import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ProgressSpinnerDialogComponent} from './progress-spinner-dialog/progress-spinner-dialog-component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSidenavComponent} from './mat-sidenav/mat-sidenav.component';
+import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -39,15 +45,22 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     MatGridListModule,
     MatCardModule,
     MatTabsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDialogModule
   ],
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
-    ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent
+    ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent,
+    MatSidenavComponent, ProgressSpinnerDialogComponent
   ],
   exports: [
-    MatToolbarComponent
+    MatToolbarComponent,
+    MatSidenavComponent
   ],
-  providers: [AuthService]
+  providers: [AuthService],
+  entryComponents: [ProgressSpinnerDialogComponent],
 })
 export class FeaturesModule { }
