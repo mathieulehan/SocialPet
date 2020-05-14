@@ -11,7 +11,7 @@ from tensorflow.keras.models import load_model
 global resultsExportEtudiants
 resultsExportEtudiants = []
 global CATEGORIES
-CATEGORIES = ['chat', 'poule', 'chien', 'cheval', 'lapin']
+CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
 
 # load and prepare the image
 def load_image(filename):

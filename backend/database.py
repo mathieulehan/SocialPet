@@ -12,7 +12,7 @@ db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "u
 def getUsers():
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
     del resultsExportUsers[:]
-    sql = "SELECT * FROM socialpet"
+    sql = "SELECT * FROM socialpet_users"
     cursor = db.cursor()
     try:
         cursor.execute(sql)
@@ -133,7 +133,7 @@ def getAll():
 
 def retrieveUser(email):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "SELECT id FROM socialpet where email = \"" + email + "\""
+    sql = "SELECT id FROM socialpet_users where email = \"" + email + "\""
     cursor = db.cursor()
     listusers = []
     try:
