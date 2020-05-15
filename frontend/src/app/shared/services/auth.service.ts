@@ -10,7 +10,9 @@ export class AuthService {
   private BASE_URL = 'http://localhost:5000/api/auth';
   public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loadTokenIfExists();
+  }
 
   login(user: User): Promise<any> {
     const url = `${this.BASE_URL}/login`;
@@ -24,6 +26,10 @@ export class AuthService {
   public logout() {
     localStorage.removeItem('ACCESS_TOKEN');
     this.isLoggedIn.next(false);
+  }
+
+  async loadTokenIfExists() {
+    this.isLoggedIn = new BehaviorSubject<boolean>(await this.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')));
   }
 
   ensureAuthenticated(token): Promise<any> {

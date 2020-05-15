@@ -71,7 +71,6 @@ export class ConnectionComponent implements OnInit, AfterViewInit {
     });
     this.authService.register(this.registerForm.value)
       .then((user) => {
-        localStorage.setItem('ACCESS_TOKEN', user.auth_token);
         dialogRef.close();
         this.tabGroup.selectedIndex = 0;
       })

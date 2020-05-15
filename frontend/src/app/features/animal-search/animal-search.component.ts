@@ -20,7 +20,7 @@ export class AnimalSearchComponent implements OnInit {
   species: string[];
   colors: string[];
   motifs: string[];
-  img: string;
+  modelResponse: any;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
@@ -47,9 +47,14 @@ export class AnimalSearchComponent implements OnInit {
         panelClass: 'transparent',
         disableClose: true
       });
+      console.log(this.uploadedAnimal.value);
       this.imageService.saveAnimal(newAnimal).subscribe(res => {
-        console.log(res);
+        this.modelResponse = res;
         dialogRef.close();
+      },
+      error => {
+        dialogRef.close();
+        console.log(error);
       });
     }
   }

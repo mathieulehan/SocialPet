@@ -11,7 +11,7 @@ export class ImageService {
   constructor(private http: HttpClient) { }
 
   saveAnimal(animal: Image): Observable<object> {
-    return this.http.post(this.baseUrl + 'image', animal);
+    return this.http.post<any>(this.baseUrl + 'image', animal);
   }
 
   getAllImages(): Observable<ImageList> {
