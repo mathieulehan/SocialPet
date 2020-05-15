@@ -3,16 +3,18 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} f
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {MatTabGroup} from '@angular/material/tabs';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 
 @Component({
   selector: 'app-connection',
   templateUrl: './connection.component.html',
   styleUrls: ['./connection.component.scss']
 })
-export class ConnectionComponent implements OnInit, AfterViewInit {
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private dialog: MatDialog) {
+export class ConnectionComponent extends SnackBarAbleComponent implements OnInit, AfterViewInit {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, dialog: MatDialog, snackBar: MatSnackBar) {
+    super(snackBar, dialog);
   }
   connectForm: FormGroup;
   registerForm: FormGroup;
@@ -43,21 +45,20 @@ export class ConnectionComponent implements OnInit, AfterViewInit {
     if (this.connectForm.invalid) {
       return;
     }
-    const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true
-    });
+    this.showSpinner();
     this.authService.login(this.connectForm.value).then((user) => {
       localStorage.setItem('ACCESS_TOKEN', user.auth_token);
       this.authService.ensureAuthenticated(user.auth_token).then((response => {
-        dialogRef.close();
+        this.hideSpinner();
+        this.router.navigateByUrl('');
+        this.openSnackBar('Bienvenue ' + response.data.name + ' !', 'Hello');
       }));
     })
     .catch((err) => {
       console.log(err);
-      dialogRef.close();
+      this.hideSpinner();
+      this.openSnackBar('Erreur lors de la connexion', 'Oups');
     });
-    this.router.navigateByUrl('');
   }
 
   register() {
@@ -65,18 +66,17 @@ export class ConnectionComponent implements OnInit, AfterViewInit {
     if (this.registerForm.invalid) {
       return;
     }
-    const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true
-    });
+    this.showSpinner();
     this.authService.register(this.registerForm.value)
       .then((user) => {
-        dialogRef.close();
+        this.hideSpinner();
         this.tabGroup.selectedIndex = 0;
+        this.openSnackBar('Compte créé, vous pouvez désormais vous connecter', 'Ok');
       })
       .catch((err) => {
         console.log(err);
-        dialogRef.close();
+        this.hideSpinner();
+        this.openSnackBar('Erreur lors de la création du compte', 'Oups');
       });
   }
 

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
+import {MatDialog} from '@angular/material/dialog';
+import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-mat-toolbar',
   templateUrl: './mat-toolbar.component.html',
   styleUrls: ['./mat-toolbar.component.scss']
 })
-export class MatToolbarComponent implements OnInit {
+export class MatToolbarComponent extends SnackBarAbleComponent implements OnInit {
   userIsConnected = false;
 
-  constructor(private authService: AuthService, private dialog: MatDialog) {
+  constructor(private authService: AuthService, dialog: MatDialog, snackBar: MatSnackBar) {
+    super(snackBar, dialog);
     this.authService.isLoggedIn.subscribe(value => {
       this.userIsConnected = value;
     });
@@ -20,11 +22,8 @@ export class MatToolbarComponent implements OnInit {
   ngOnInit(): void {}
 
   logOut() {
-    const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true
-    });
+    this.showSpinner();
     this.authService.logout();
-    dialogRef.close();
+    this.hideSpinner();
   }
 }

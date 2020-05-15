@@ -6,13 +6,15 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
+import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-upload-form',
   templateUrl: './upload-form.component.html',
   styleUrls: ['./upload-form.component.scss']
 })
-export class UploadFormComponent implements OnInit {
+export class UploadFormComponent extends SnackBarAbleComponent implements OnInit {
   title = 'Participer au projet banque de données Social Pet';
   speech = 'Voici pourquoi c\'est important de fournir plusieurs images, voici comment elles sont traitées et comment ces informations personnelles ' +
     'permettrons de vous contacter si votre animal a le malheur de disparaître.';
@@ -31,7 +33,8 @@ export class UploadFormComponent implements OnInit {
     motifControl: ['', Validators.required],
     photosControl: ['', Validators.required]
   });
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog) {
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar) {
+    super(snackBar, dialog);
   }
   ngOnInit(): void {
     this.species = Object.keys(Species);
@@ -40,11 +43,8 @@ export class UploadFormComponent implements OnInit {
   }
 
   uploadAnimal() {
-    const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true
-    });
-    dialogRef.close();
+    this.showSpinner();
+    this.hideSpinner();
   }
   get raceControl() {
     return this.uploadedAnimal.get('raceControl');
