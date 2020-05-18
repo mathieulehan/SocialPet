@@ -293,6 +293,37 @@ def insertTable(data, table, colonne) :
 
     return cursor.lastrowid
 
+def deleteAnimal(user_id, table) :
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = "DELETE FROM " + table + " WHERE idUser = " + str(user_id) 
+    cursor = db.cursor()
+
+    try:
+        result = cursor.execute(sql)
+        db.commit()
+
+    except MySQLdb.Error as e:
+        try:
+            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print ("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    return cursor.rowcount
+
+def deleteAll(user_id) :
+    CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
+    result = 0
+    for table in CATEGORIES:
+        result = result + deleteAnimal(user_id, table)
+
+    return result
+
+
 
 def retrieveUserById(user_id):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")

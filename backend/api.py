@@ -92,6 +92,15 @@ def get_perdu():
 
     return jsonify({'image': result}), 201
 
+# RGPD suppression photos animaux
+@app.route('/api/image/<int:user_id>', methods=['DELETE'])
+def delete_picture(user_id):
+
+    result = database.deleteAll(user_id)
+
+    return jsonify({'nombre de ligne supprimée': result}), 201
+
+
 
 # Création d'un compte utilisateur
 @app.route('/api/auth/register', methods=['POST'])
