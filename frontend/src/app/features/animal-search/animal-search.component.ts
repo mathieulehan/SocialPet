@@ -8,19 +8,21 @@ import {ImageService} from '../../shared/services/image.service';
 import {Image} from '../../shared/models/image';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
+import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-animal-search',
   templateUrl: './animal-search.component.html',
   styleUrls: ['./animal-search.component.scss']
 })
-export class AnimalSearchComponent implements OnInit {
+export class AnimalSearchComponent extends SnackBarAbleComponent implements OnInit {
   title = 'Recherche d\'animal';
   speech = 'Voici pourquoi il est important d\'effectuer un traitement sur les images avant de nous les fournir.';
   species: string[];
   colors: string[];
   motifs: string[];
-  img: string;
+  modelResponse: any;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
@@ -30,7 +32,10 @@ export class AnimalSearchComponent implements OnInit {
     motifControl: [''],
     photosControl: ['', Validators.required]
   });
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService, private dialog: MatDialog) { }
+
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService, dialog: MatDialog, snackBar: MatSnackBar) {
+    super(snackBar, dialog);
+  }
 
   ngOnInit(): void {
     this.species = Object.keys(Species);
@@ -43,13 +48,15 @@ export class AnimalSearchComponent implements OnInit {
       const newAnimal = new Image();
       newAnimal.img = blob;
       newAnimal.email = 'valra@live.fr';
-      const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-        panelClass: 'transparent',
-        disableClose: true
-      });
+      this.showSpinner();
       this.imageService.saveAnimal(newAnimal).subscribe(res => {
-        console.log(res);
-        dialogRef.close();
+        this.modelResponse = res;
+        this.hideSpinner();
+        this.openSnackBar(res.item, 'OK');
+      },
+      error => {
+        this.hideSpinner();
+        this.openSnackBar(error.toString(), 'Oups');
       });
     }
   }

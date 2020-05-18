@@ -10,8 +10,8 @@ export class ImageService {
   baseUrl = 'http://localhost:5000/api/';
   constructor(private http: HttpClient) { }
 
-  saveAnimal(animal: Image): Observable<object> {
-    return this.http.post(this.baseUrl + 'image', animal);
+  saveAnimal(animal: Image): Observable<Image> {
+    return this.http.post<Image>(this.baseUrl + 'image', animal);
   }
 
   getAllImages(): Observable<ImageList> {

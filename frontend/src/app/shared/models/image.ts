@@ -9,4 +9,5 @@ export class Image {
   img: string;
   email?: string;
   sanitizedPath?: SafeResourceUrl;
+  item: string;
 }

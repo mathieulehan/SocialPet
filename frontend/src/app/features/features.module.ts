@@ -30,31 +30,36 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSidenavComponent} from './mat-sidenav/mat-sidenav.component';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
+import {SnackBarAbleComponent} from './snack-bar-able/snack-bar-able.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCardModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    MatListModule,
-    MatDialogModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatCardModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatIconModule
+    ],
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
     ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent,
-    MatSidenavComponent, ProgressSpinnerDialogComponent
+    MatSidenavComponent, ProgressSpinnerDialogComponent, SnackBarAbleComponent
   ],
   exports: [
     MatToolbarComponent,
