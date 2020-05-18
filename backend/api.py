@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import database
 import model
+import modelRace
 import base64
 import json
 import utils
@@ -40,19 +41,34 @@ def get_images():
 # Post d'une image dans la base de donnée
 @app.route('/api/image', methods=['POST'])
 def insert_image():
-    if not request.json or not 'img' in request.json or not 'email' in request.json:
+    if not request.json or not 'images' in request.json or not 'email' in request.json:
         abort(400)
 
-    # Decode image
-    image_base64 = request.json['img']
-    image_base64_utf8 = image_base64.encode("utf-8")
-    image_64_decode = base64.decodestring(image_base64_utf8)
-    image_result = open('./img_temp.jpg', 'wb')
-    image_result.write(image_64_decode)
+    img_base64  = []
+    for img in request.json['images'] :
 
-    espece = model.get_espece('./img_temp.jpg')
-    item = database.storeImagePet(image_base64_utf8, espece, request.json['email'], request.json['data'])
+        # Decode image
+        #image_base64 = request.json['img']
+        image_base64 = img
+        image_base64_utf8 = image_base64.encode("utf-8")
+        img_base64.append(image_base64_utf8)
+        image_64_decode = base64.decodestring(image_base64_utf8)
+        image_result = open('./img_temp.jpg', 'wb')
+        image_result.write(image_64_decode)
 
+        espece = model.get_espece('./img_temp.jpg')
+        print(espece)
+        if espece == "chien" :
+            race = modelRace.my_dog_breed_detector('./img_temp.jpg')
+            if 'race' in request.json :
+                request.json['race'] = race
+            else :
+                request.json.setdefault('race', race)
+        
+        print(request.json['race'])
+
+    #item = database.storeImagePet(image_base64_utf8, espece, request.json)
+    item = database.storeMultiImagePet(img_base64, espece, request.json)
     return jsonify({'item': item}), 201
 
 
