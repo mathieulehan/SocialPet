@@ -44,6 +44,7 @@ def insert_image():
     if not request.json or not 'images' in request.json or not 'email' in request.json:
         abort(400)
 
+    CATEGORIES = {'chat' : 0, 'poule2' : 0, 'chien' : 0, 'cheval' : 0, 'lapin' : 0}
     img_base64  = []
     for img in request.json['images'] :
 
@@ -57,15 +58,16 @@ def insert_image():
         image_result.write(image_64_decode)
 
         espece = model.get_espece('./img_temp.jpg')
-        print(espece)
-        if espece == "chien" :
-            race = modelRace.my_dog_breed_detector('./img_temp.jpg')
-            if 'race' in request.json :
-                request.json['race'] = race
-            else :
-                request.json.setdefault('race', race)
+        CATEGORIES[espece] = CATEGORIES[espece] + 1
         
-        print(request.json['race'])
+    espece = max(CATEGORIES, key = CATEGORIES.get)
+
+    if espece == "chien" :
+        race = modelRace.my_dog_breed_detector('./img_temp.jpg')
+        if 'race' in request.json :
+            request.json['race'] = race
+        else :
+            request.json.setdefault('race', race)
 
     #item = database.storeImagePet(image_base64_utf8, espece, request.json)
     item = database.storeMultiImagePet(img_base64, espece, request.json)
@@ -89,6 +91,15 @@ def get_perdu():
     result = database.getImage(espece)
 
     return jsonify({'image': result}), 201
+
+# RGPD suppression photos animaux
+@app.route('/api/image/<int:user_id>', methods=['DELETE'])
+def delete_picture(user_id):
+
+    result = database.deleteAll(user_id)
+
+    return jsonify({'nombre de ligne supprimée': result}), 201
+
 
 
 # Création d'un compte utilisateur
