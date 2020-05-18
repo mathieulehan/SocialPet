@@ -14,6 +14,7 @@ import {AdminComponent} from './features/admin/admin.component';
 import {EnsureAuthenticated} from './shared/services/ensure-authentificated.service';
 import {LoginRedirectService} from './shared/services/login-redirect.service';
 import {AuthService} from './shared/services/auth.service';
+import {RgpdComponent} from './features/rgpd/rgpd.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'images', component: ShowAllImagesComponent, canActivate: [EnsureAuthenticated] },
   { path: 'auth', component: AuthComponent },
   { path: 'admin', component: AdminComponent, canActivate: [EnsureAuthenticated] },
+  { path: 'rgpd', component: RgpdComponent, canActivate: [EnsureAuthenticated] },
   { path: '**', component: NoPageFoundComponent }
 ];
 

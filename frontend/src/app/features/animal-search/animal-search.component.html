@@ -40,6 +40,12 @@
           <img width="32" [src]="blob" alt="blob">
         </div>
         <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
+        <br>
+        <mat-checkbox formControlName="rgpdControl">J'accepte le traitement de mes images par l'algorithme de SocialPet.</mat-checkbox>
+        <p>SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
+          Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
+        <span *ngIf="rgpdControl.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
+        <button type="button" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
         <br><br>
         <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>
       </form>

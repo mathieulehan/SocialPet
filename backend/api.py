@@ -22,6 +22,7 @@ app_settings = os.getenv(
 )
 app.config.from_object(app_settings)
 
+
 # Retourne tout les utilisateurs inscrits
 @app.route('/api/users', methods=['GET'])
 def get_users():
@@ -38,18 +39,25 @@ def get_images():
     return jsonify({'images': result}), 201
 
 
+# Retourne toutes les images de la BDD pour un utilisateur donné
+@app.route('/api/images/<int:user_id>', methods=['GET'])
+def get_images_for_user(user_id):
+    result = database.getAllForUser(user_id)
+
+    return jsonify({'images': result}), 201
+
+
 # Post d'une image dans la base de donnée
 @app.route('/api/image', methods=['POST'])
 def insert_image():
     if not request.json or not 'images' in request.json or not 'email' in request.json:
         abort(400)
 
-    CATEGORIES = {'chat' : 0, 'poule2' : 0, 'chien' : 0, 'cheval' : 0, 'lapin' : 0}
-    img_base64  = []
-    for img in request.json['images'] :
-
+    CATEGORIES = {'chat': 0, 'poule2': 0, 'chien': 0, 'cheval': 0, 'lapin': 0}
+    img_base64 = []
+    for img in request.json['images']:
         # Decode image
-        #image_base64 = request.json['img']
+        # image_base64 = request.json['img']
         image_base64 = img
         image_base64_utf8 = image_base64.encode("utf-8")
         img_base64.append(image_base64_utf8)
@@ -59,17 +67,17 @@ def insert_image():
 
         espece = model.get_espece('./img_temp.jpg')
         CATEGORIES[espece] = CATEGORIES[espece] + 1
-        
-    espece = max(CATEGORIES, key = CATEGORIES.get)
 
-    if espece == "chien" :
+    espece = max(CATEGORIES, key=CATEGORIES.get)
+
+    if espece == "chien":
         race = modelRace.my_dog_breed_detector('./img_temp.jpg')
-        if 'race' in request.json :
+        if 'race' in request.json:
             request.json['race'] = race
-        else :
+        else:
             request.json.setdefault('race', race)
 
-    #item = database.storeImagePet(image_base64_utf8, espece, request.json)
+    # item = database.storeImagePet(image_base64_utf8, espece, request.json)
     item = database.storeMultiImagePet(img_base64, espece, request.json)
     return jsonify({'item': item}), 201
 
@@ -92,14 +100,13 @@ def get_perdu():
 
     return jsonify({'image': result}), 201
 
+
 # RGPD suppression photos animaux
 @app.route('/api/image/<int:user_id>', methods=['DELETE'])
 def delete_picture(user_id):
-
     result = database.deleteAll(user_id)
 
-    return jsonify({'nombre de ligne supprimée': result}), 201
-
+    return jsonify({'deletedImagesCount': result}), 201
 
 
 # Création d'un compte utilisateur
@@ -138,10 +145,11 @@ def log_user():
         return make_response(jsonify(response)), 200
     else:
         response = {
-        'status': 'fail',
-        'message': 'L\'utilisateur n\'existe pas.'
-    }
+            'status': 'fail',
+            'message': 'L\'utilisateur n\'existe pas.'
+        }
     return make_response(jsonify(response)), 404
+
 
 # Vérification de la validité du token fourni
 @app.route('/api/auth/status', methods=['GET'])

@@ -8,6 +8,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
 import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {RgpdDialogComponent} from "../rgpd-dialog/rgpd-dialog.component";
 
 @Component({
   selector: 'app-upload-form',
@@ -31,9 +32,10 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
     specieControl: ['', Validators.required],
     colorControl: ['', Validators.required],
     motifControl: ['', Validators.required],
-    photosControl: ['', Validators.required]
+    photosControl: ['', Validators.required],
+    rgpdControl: [false, Validators.requiredTrue]
   });
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar, private rgpdDialog: MatDialog) {
     super(snackBar, dialog);
   }
   ngOnInit(): void {
@@ -62,6 +64,10 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
     return this.uploadedAnimal.get('photosControl');
   }
 
+  get rgpdControl() {
+    return this.uploadedAnimal.get('rgpdControl');
+  }
+
   changeListener($event): void {
     this.readThis($event.target);
   }
@@ -77,5 +83,9 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
       this.selectedFilesNames.push(file.name);
       myReader.readAsDataURL(file);
     });
+  }
+
+  openRgpdDialog() {
+    this.rgpdDialog.open(RgpdDialogComponent);
   }
 }

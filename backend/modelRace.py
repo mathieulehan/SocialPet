@@ -1,10 +1,9 @@
-from tensorflow.python.keras.engine.saving import load_model
 import numpy as np
+from keras.engine.saving import load_model
+from tensorflow.keras.preprocessing import image
+
 import utils
 
-import cv2
-import matplotlib.pyplot as plt
-from tensorflow.keras.preprocessing import image
 
 #dog_names = [item[20:-1] for item in sorted(glob("./model/train/*/"))]
 

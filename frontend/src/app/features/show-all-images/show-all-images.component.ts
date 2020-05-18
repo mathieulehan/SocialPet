@@ -22,7 +22,8 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
   ngOnInit(): void {
     this.showSpinner();
     this.imageService.getAllImages().subscribe(res => {
-      this.imagesData = res.images;
+      this.imagesData = res;
+      console.log(this.imagesData);
       this.sanitizeImages();
       this.hideSpinner();
       console.log(this.imagesData);
@@ -34,6 +35,10 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
   }
 
   private sanitizeImages() {
-    this.imagesData.forEach(image => image.sanitizedPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.base64Str + image.img));
+    this.imagesData.forEach(
+      image => image.images.forEach(
+      imageData => image.sanitizedPath.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.base64Str + imageData))
+      )
+    );
   }
 }

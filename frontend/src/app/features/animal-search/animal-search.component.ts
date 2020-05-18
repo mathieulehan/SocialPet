@@ -6,10 +6,11 @@ import {Motifs} from '../../shared/motifs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ImageService} from '../../shared/services/image.service';
 import {Image} from '../../shared/models/image';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
+import {MatDialog} from '@angular/material/dialog';
 import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from '../../shared/services/auth.service';
+import {RgpdDialogComponent} from '../rgpd-dialog/rgpd-dialog.component';
 
 @Component({
   selector: 'app-animal-search',
@@ -30,10 +31,12 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
     specieControl: [''],
     colorControl: [''],
     motifControl: [''],
-    photosControl: ['', Validators.required]
+    photosControl: ['', Validators.required],
+    rgpdControl: [false, Validators.requiredTrue]
   });
 
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService, dialog: MatDialog, snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService,
+              dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService, private rgpdDialog: MatDialog) {
     super(snackBar, dialog);
   }
 
@@ -44,29 +47,45 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   }
 
   searchAnimal() {
+    const newAnimal = new Image();
     for (const blob of this.generatedBlobs) {
-      const newAnimal = new Image();
-      newAnimal.img = blob;
-      newAnimal.email = 'valra@live.fr';
-      this.showSpinner();
-      this.imageService.saveAnimal(newAnimal).subscribe(res => {
-        this.modelResponse = res;
-        this.hideSpinner();
-        this.openSnackBar(res.item, 'OK');
-      },
+      newAnimal.images.push(blob);
+    }
+    this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
+        const user = response.data;
+        newAnimal.email = user.email;
+        newAnimal.couleur = this.color.value[0];
+        this.showSpinner();
+        this.imageService.saveAnimal(newAnimal).subscribe(res => {
+          this.modelResponse = res;
+          this.hideSpinner();
+          this.openSnackBar(res.item, 'OK');
+        },
       error => {
         this.hideSpinner();
         this.openSnackBar(error.toString(), 'Oups');
+        });
       });
-    }
   }
 
   get photosControl() {
     return this.uploadedAnimal.get('photosControl');
   }
 
+  get color() {
+    return this.uploadedAnimal.get('colorControl');
+  }
+
+  get rgpdControl() {
+    return this.uploadedAnimal.get('rgpdControl');
+  }
+
   changeListener($event): void {
     this.readThis($event.target);
+  }
+
+  openRgpdDialog() {
+    this.rgpdDialog.open(RgpdDialogComponent);
   }
 
   readThis(inputValue: any): void {

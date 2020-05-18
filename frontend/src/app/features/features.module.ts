@@ -31,35 +31,39 @@ import {MatSidenavComponent} from './mat-sidenav/mat-sidenav.component';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import {SnackBarAbleComponent} from './snack-bar-able/snack-bar-able.component';
-import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {MatIconModule} from "@angular/material/icon";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {RgpdComponent} from './rgpd/rgpd.component';
+import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        BrowserAnimationsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatGridListModule,
-        MatCardModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatProgressSpinnerModule,
-        MatListModule,
-        MatDialogModule,
-        MatSnackBarModule,
-        MatIconModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatCardModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatIconModule,
+    MatCheckboxModule
+  ],
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
     ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent,
-    MatSidenavComponent, ProgressSpinnerDialogComponent, SnackBarAbleComponent
+    MatSidenavComponent, ProgressSpinnerDialogComponent, SnackBarAbleComponent, RgpdComponent, RgpdDialogComponent
   ],
   exports: [
     MatToolbarComponent,

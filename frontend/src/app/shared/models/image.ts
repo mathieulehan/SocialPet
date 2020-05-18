@@ -6,8 +6,9 @@ export class ImageList {
 
 export class Image {
   id: number;
-  img: string;
-  email?: string;
-  sanitizedPath?: SafeResourceUrl;
+  images: string[] = [];
+  email: string;
+  sanitizedPath?: SafeResourceUrl[];
   item: string;
+  couleur: string;
 }

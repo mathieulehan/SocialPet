@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Image, ImageList} from '../models/image';
 
 @Injectable({
@@ -14,12 +14,19 @@ export class ImageService {
     return this.http.post<Image>(this.baseUrl + 'image', animal);
   }
 
-  getAllImages(): Observable<ImageList> {
-    return this.http.get<ImageList>(this.baseUrl + 'images');
+  getAllImages(): Observable<Image[]> {
+    return this.http.get<Image[]>(this.baseUrl + 'images');
   }
 
   getRelatedImages(animal: any): Observable<object> {
     return this.http.post(this.baseUrl + 'perdu', animal);
   }
 
+  deleteByUserId(userId: number): Observable<any> {
+    return this.http.delete(this.baseUrl + 'image/' + userId);
+  }
+
+  getImagesByUserId(userId: number): Observable<Image> {
+    return this.http.get<Image>(this.baseUrl + 'images/' + userId);
+  }
 }

@@ -38,21 +38,20 @@ def getUsers():
 
 
 # store picture past in request
-def storeImagePet(img, table, data) :
+def storeImagePet(img, table, data):
     idUser = retrieveUser(data['email'])
-    if(idUser == None) :
+    if (idUser == None):
         item = {
-            "error" : "utilisateur inexistant"
+            "error": "utilisateur inexistant"
         }
         return item
-        
 
     idRace = retrieveRace(data['race'])
-    if(idRace == None) :
+    if (idRace == None):
         idRace = insertTable(data['race'], "race", "race")
-    
+
     idCouleur = retrieveCouleur(data['couleur'])
-    if(idCouleur == None) :
+    if (idCouleur == None):
         idCouleur = insertTable(data['couleur'], "socialpet_couleur", "couleur")
 
     print(idUser)
@@ -60,7 +59,7 @@ def storeImagePet(img, table, data) :
     sql = "INSERT INTO " + table + "(img, idUser, idCouleur, idRace) VALUES (%s, %s, %s, %s)"
     cursor = db.cursor()
 
-    try :
+    try:
         result = cursor.execute(sql, [img, idUser, idCouleur, idRace])
         db.commit()
         item = {
@@ -82,21 +81,20 @@ def storeImagePet(img, table, data) :
 
 
 # store multiple picture
-def storeMultiImagePet(images, table, data) :
+def storeMultiImagePet(images, table, data):
     idUser = retrieveUser(data['email'])
-    if(idUser == None) :
+    if (idUser == None):
         item = {
-            "error" : "utilisateur inexistant"
+            "error": "utilisateur inexistant"
         }
         return item
-        
 
     idRace = retrieveRace(data['race'])
-    if(idRace == None) :
+    if (idRace == None):
         idRace = insertTable(data['race'], "race", "race")
-    
+
     idCouleur = retrieveCouleur(data['couleur'])
-    if(idCouleur == None) :
+    if (idCouleur == None):
         idCouleur = insertTable(data['couleur'], "socialpet_couleur", "couleur")
 
     print(idUser)
@@ -106,12 +104,12 @@ def storeMultiImagePet(images, table, data) :
     print(sql)
 
     records_to_inserts = []
-    for img in images :
+    for img in images:
         records_to_inserts.append([img, idUser, idCouleur, idRace])
 
     cursor = db.cursor()
 
-    try :
+    try:
         result = cursor.executemany(sql, records_to_inserts)
         db.commit()
         item = {
@@ -135,7 +133,7 @@ def storeMultiImagePet(images, table, data) :
 # return all picture for one table store in the database
 def getImage(table):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet ON tab.idUser = socialpet.id"
+    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id "
     cursor = db.cursor()
     resultExport = []
     try:
@@ -169,12 +167,60 @@ def getImage(table):
     return resultExport
 
 
+# returns all pictures for one table store & one given user in the database
+def getImageForUser(table, user_id):
+    db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
+    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id  WHERE idUser = " + str(user_id)
+    cursor = db.cursor()
+    resultExport = []
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            user = {
+                "id": row[2],
+                "email": row[5]
+            }
+
+            item = {
+                "id": row[0],
+                "img": row[1],
+                "table": table,
+                "user": user
+            }
+            resultExport.append(item)
+
+    except MySQLdb.Error as e:
+        try:
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            return None
+        except IndexError:
+            print("MySQL Error: %s" % str(e))
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+    return resultExport
+
 # return all picture of animals store in the database
 def getAll():
     CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
     result = []
     for table in CATEGORIES:
         temp = getImage(table)
+        if temp:
+            result = result + temp
+        temp = []
+    return result
+
+
+# return all picture of animals store in the database
+def getAllForUser(user_id):
+    CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
+    result = []
+    for table in CATEGORIES:
+        temp = getImageForUser(table, user_id)
         if temp:
             result = result + temp
         temp = []
@@ -206,12 +252,13 @@ def retrieveUser(email):
             cursor.close()
             db.close()
 
-    if not listusers :
+    if not listusers:
         return None
-    else :
+    else:
         return listusers[0]['id']
 
-def retrieveCouleur(couleur) :
+
+def retrieveCouleur(couleur):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
     sql = "SELECT id FROM socialpet_couleur where couleur = \"" + couleur + "\""
     cursor = db.cursor()
@@ -227,21 +274,22 @@ def retrieveCouleur(couleur) :
 
     except MySQLdb.Error as e:
         try:
-            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
             return None
         except IndexError:
-            print ("MySQL Error: %s" % str(e))
+            print("MySQL Error: %s" % str(e))
             return None
         finally:
             cursor.close()
             db.close()
 
-    if not listcouleur :
+    if not listcouleur:
         return None
-    else :
+    else:
         return listcouleur[0]['id']
 
-def retrieveRace(race) :
+
+def retrieveRace(race):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
     sql = "SELECT id FROM race where race = \"" + race + "\""
     cursor = db.cursor()
@@ -257,23 +305,24 @@ def retrieveRace(race) :
 
     except MySQLdb.Error as e:
         try:
-            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
             return None
         except IndexError:
-            print ("MySQL Error: %s" % str(e))
+            print("MySQL Error: %s" % str(e))
             return None
         finally:
             cursor.close()
             db.close()
 
-    if not listrace :
+    if not listrace:
         return None
-    else :
+    else:
         return listrace[0]['id']
 
-def insertTable(data, table, colonne) :
+
+def insertTable(data, table, colonne):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "INSERT INTO " + table + "(" + colonne + ") VALUES (\"" + data + "\")" 
+    sql = "INSERT INTO " + table + "(" + colonne + ") VALUES (\"" + data + "\")"
     cursor = db.cursor()
     listcouleur = []
     try:
@@ -282,10 +331,10 @@ def insertTable(data, table, colonne) :
 
     except MySQLdb.Error as e:
         try:
-            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
             return None
         except IndexError:
-            print ("MySQL Error: %s" % str(e))
+            print("MySQL Error: %s" % str(e))
             return None
         finally:
             cursor.close()
@@ -293,9 +342,10 @@ def insertTable(data, table, colonne) :
 
     return cursor.lastrowid
 
-def deleteAnimal(user_id, table) :
+
+def deleteAnimal(user_id, table):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "DELETE FROM " + table + " WHERE idUser = " + str(user_id) 
+    sql = "DELETE FROM " + table + " WHERE idUser = " + str(user_id)
     cursor = db.cursor()
 
     try:
@@ -304,10 +354,10 @@ def deleteAnimal(user_id, table) :
 
     except MySQLdb.Error as e:
         try:
-            print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+            print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
             return None
         except IndexError:
-            print ("MySQL Error: %s" % str(e))
+            print("MySQL Error: %s" % str(e))
             return None
         finally:
             cursor.close()
@@ -315,14 +365,14 @@ def deleteAnimal(user_id, table) :
 
     return cursor.rowcount
 
-def deleteAll(user_id) :
+
+def deleteAll(user_id):
     CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
     result = 0
     for table in CATEGORIES:
         result = result + deleteAnimal(user_id, table)
 
     return result
-
 
 
 def retrieveUserById(user_id):
