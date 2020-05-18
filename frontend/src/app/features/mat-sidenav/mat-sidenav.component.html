@@ -3,8 +3,8 @@
     <mat-icon aria-hidden="false" aria-label="Ouvrir le menu" (click)="sidenav.open()">menu</mat-icon>
   </button>
 </div>
-<mat-sidenav-container class="social-pet-body">
-  <mat-sidenav #sidenav [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'" class="example-container" mode="side" opened role="navigation">
+<mat-sidenav-container class="social-pet-body" autosize>
+  <mat-sidenav #sidenav [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'" class="example-container" opened role="navigation">
     <mat-list>
       <mat-list-item><button mat-button color="primary" [routerLink]="['']" skipLocationChange routerLinkActive="active">Accueil</button></mat-list-item>
       <mat-list-item *ngIf="userIsConnected"><button mat-button color="primary" [routerLink]="['/search']" skipLocationChange routerLinkActive="active">J'ai trouvé un animal</button></mat-list-item>
