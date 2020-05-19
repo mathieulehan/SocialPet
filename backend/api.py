@@ -34,6 +34,10 @@ def get_users():
 # Retourne toutes les images de la BDD
 @app.route('/api/images', methods=['GET'])
 def get_images():
+
+    # Vérification de l'autorisation
+    get_status()
+
     result = database.getAll()
 
     return jsonify({'images': result}), 201
@@ -42,6 +46,10 @@ def get_images():
 # Retourne toutes les images de la BDD pour un utilisateur donné
 @app.route('/api/images/<int:user_id>', methods=['GET'])
 def get_images_for_user(user_id):
+
+    # Vérification de l'autorisation
+    get_status()
+
     result = database.getAllForUser(user_id)
 
     return jsonify({'images': result}), 201
@@ -52,6 +60,9 @@ def get_images_for_user(user_id):
 def insert_image():
     if not request.json or not 'images' in request.json or not 'email' in request.json:
         abort(400)
+
+    # Vérification de l'autorisation
+    get_status()
 
     CATEGORIES = {'chat': 0, 'poule2': 0, 'chien': 0, 'cheval': 0, 'lapin': 0}
     img_base64 = []
@@ -88,6 +99,9 @@ def get_perdu():
     if not request.json or not 'img' in request.json:
         abort(400)
 
+    # Vérification de l'autorisation
+    get_status()
+
     image_base64 = request.json['img']
     image_base64 = image_base64.encode("utf-8")
 
@@ -104,6 +118,9 @@ def get_perdu():
 # RGPD suppression photos animaux
 @app.route('/api/image/<int:user_id>', methods=['DELETE'])
 def delete_picture(user_id):
+    # Vérification de l'autorisation
+    get_status()
+
     result = database.deleteAll(user_id)
 
     return jsonify({'deletedImagesCount': result}), 201
@@ -193,3 +210,20 @@ def get_status():
             'message': 'Provide a valid auth token.'
         }
         return make_response(jsonify(responseObject)), 401
+
+
+# Suppression de compte
+@app.route('/api/auth/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+
+    # Vérification de l'autorisation
+    get_status()
+
+    # Suppression de ses photos
+    database.deleteAll(user_id)
+
+    # Suppression de son compte
+    result = database.deleteUserById(user_id)
+
+    # Renvoie true si un utilisateur a bien été supprimé
+    return jsonify({'success': result == 1}), 201
