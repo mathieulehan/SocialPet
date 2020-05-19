@@ -1,14 +1,24 @@
 import {SafeResourceUrl} from '@angular/platform-browser';
-
-export class ImageList {
-  images: Image[];
-}
+import {Color} from './color';
+import {Race} from './race';
+import {User} from './user';
 
 export class Image {
   id: number;
   images: string[] = [];
   email: string;
   sanitizedPath?: SafeResourceUrl[];
-  item: string;
+  item: any;
   couleur: string;
+  img?: string[];
+}
+
+export class ImageFromBack {
+  id: number;
+  sanitizedPath?: SafeResourceUrl;
+  user: User;
+  couleur: Color;
+  race: Race;
+  img: string;
+  specie: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User} from '../models/user';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -18,6 +18,7 @@ export class AuthService {
     const url = `${this.BASE_URL}/login`;
     return this.http.post(url, user).toPromise();
   }
+
   register(user: User): Promise<any> {
     const url = `${this.BASE_URL}/register`;
     return this.http.post(url, user).toPromise();
@@ -38,10 +39,14 @@ export class AuthService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    const response = this.http.get<any>(url, { headers: reqHeaders }).toPromise();
+    const response = this.http.get<any>(url, {headers: reqHeaders}).toPromise();
     response.then(user => {
       this.isLoggedIn.next(user.status === 'success');
     });
     return response;
+  }
+
+  deleteUserById(userId: number): Observable<any> {
+    return this.http.delete<any>(`${this.BASE_URL}/` + userId);
   }
 }

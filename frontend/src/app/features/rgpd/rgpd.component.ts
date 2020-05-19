@@ -26,9 +26,6 @@ export class RgpdComponent extends SnackBarAbleComponent implements OnInit {
   ngOnInit(): void {
     this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
       this.user = response.data;
-      this.imageService.getImagesByUserId(this.user.user_id).subscribe(res => {
-        this.userImages = res;
-      });
     });
   }
 
@@ -41,7 +38,16 @@ export class RgpdComponent extends SnackBarAbleComponent implements OnInit {
   }
 
   deleteUserAccount() {
-
+    this.showSpinner();
+    this.authService.deleteUserById(this.user.user_id).subscribe(res => {
+      if (res.success) {
+        this.openSnackBar('Votre compte et images associées ont été supprimés', 'OK');
+        this.authService.logout();
+      } else {
+        this.openSnackBar('Échec lors de la suppression du compte, contactez un administrateur', 'OK');
+      }
+    });
+    this.hideSpinner();
   }
 
   private sanitizeImages() {

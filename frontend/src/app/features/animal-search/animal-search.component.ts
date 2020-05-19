@@ -57,9 +57,8 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
         newAnimal.couleur = this.color.value[0];
         this.showSpinner();
         this.imageService.saveAnimal(newAnimal).subscribe(res => {
-          this.modelResponse = res;
           this.hideSpinner();
-          this.openSnackBar(res.item, 'OK');
+          this.openSnackBar(res.item.table, 'OK');
         },
       error => {
         this.hideSpinner();

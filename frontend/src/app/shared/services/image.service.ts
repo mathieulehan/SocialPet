@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Image, ImageList} from '../models/image';
+import {Image, ImageFromBack} from '../models/image';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class ImageService {
     return this.http.post<Image>(this.baseUrl + 'image', animal);
   }
 
-  getAllImages(): Observable<Image[]> {
-    return this.http.get<Image[]>(this.baseUrl + 'images');
+  getAllImages(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'images');
   }
 
   getRelatedImages(animal: any): Observable<object> {
@@ -26,7 +26,7 @@ export class ImageService {
     return this.http.delete(this.baseUrl + 'image/' + userId);
   }
 
-  getImagesByUserId(userId: number): Observable<Image> {
-    return this.http.get<Image>(this.baseUrl + 'images/' + userId);
+  getImagesByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'images/' + userId);
   }
 }

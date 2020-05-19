@@ -24,6 +24,7 @@ export class MatToolbarComponent extends SnackBarAbleComponent implements OnInit
   logOut() {
     this.showSpinner();
     this.authService.logout();
+    this.authService.loadTokenIfExists().then();
     this.hideSpinner();
   }
 }
