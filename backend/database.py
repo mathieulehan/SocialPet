@@ -398,7 +398,6 @@ def retrieveUserById(user_id):
             "password": result[4],
             "created_at": result[5]
         }
-        print(user)
     except MySQLdb.Error as e:
         try:
             print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))

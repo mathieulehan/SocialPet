@@ -1,64 +1,57 @@
-<mat-grid-list cols="2" role="list" [rowHeight]="700">
-  <mat-grid-tile role="listitem">
-    <mat-card>
-      <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="searchAnimal()">
-        <mat-form-field class="example-full-width">
-          <mat-label>Espèce (si connue)</mat-label>
-          <mat-select formControlName="specieControl">
-            <mat-option *ngFor="let specie of species" [value]="specie">
-              {{specie}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <br>
-        <mat-form-field class="example-full-width">
-          <mat-label>Race (si connue)</mat-label>
-          <input matInput formControlName="raceControl">
-        </mat-form-field>
-        <br>
-        <h4>L'animal possède ces :</h4>
-        <mat-form-field class="example-full-width">
-          <mat-label>Couleur(s)</mat-label>
-          <mat-select formControlName="colorControl" multiple>
-            <mat-option *ngFor="let color of colors" [value]="color">
-              {{color}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <h4>Disposées selon ce :</h4>
-        <mat-form-field class="example-full-width">
-          <mat-label>Motif</mat-label>
-          <mat-select formControlName="motifControl" multiple>
-            <mat-option *ngFor="let motif of motifs" [value]="motif">
-              {{motif}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <h4>Photos de l'animal en question :</h4>
-        <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
-        <div *ngFor="let blob of generatedBlobsDecoded">
-          <img width="32" [src]="blob" alt="blob">
-        </div>
-        <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
-        <br>
-        <mat-checkbox formControlName="rgpdControl">J'accepte le traitement de mes images par l'algorithme de SocialPet.</mat-checkbox>
-        <p>SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
-          Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
-        <span *ngIf="rgpdControl.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
-        <button type="button" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
-        <br><br>
-        <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>
-      </form>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card>
-      <mat-card-title>{{ title }}</mat-card-title>
-      <mat-card-content>
-        <img width="540" alt="Upload pet image" src="../../../assets/lost_cat.jpg">
-        <p> {{ speech }}</p>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <h4>{{modelResponse}}</h4>
-</mat-grid-list>
+<mat-card>
+  <mat-card-title>{{ title }}</mat-card-title>
+  <img mat-card-image alt="Upload pet image" src="../../../assets/lost_cat.jpg">
+  <mat-card-content>
+    <p> {{ speech }}</p>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+  <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="searchAnimal()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Espèce (si connue)</mat-label>
+      <mat-select formControlName="specieControl">
+        <mat-option *ngFor="let specie of species" [value]="specie">
+          {{specie}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <mat-label>Race (si connue)</mat-label>
+      <input matInput formControlName="raceControl">
+    </mat-form-field>
+    <br>
+    <h4>L'animal possède ces :</h4>
+    <mat-form-field class="example-full-width">
+      <mat-label>Couleur(s)</mat-label>
+      <mat-select formControlName="colorControl" multiple>
+        <mat-option *ngFor="let color of colors" [value]="color">
+          {{color}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h4>Disposées selon ce :</h4>
+    <mat-form-field class="example-full-width">
+      <mat-label>Motif</mat-label>
+      <mat-select formControlName="motifControl" multiple>
+        <mat-option *ngFor="let motif of motifs" [value]="motif">
+          {{motif}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h4>Photos de l'animal en question :</h4>
+    <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
+    <div *ngFor="let blob of generatedBlobsDecoded">
+      <img width="32" [src]="blob" alt="blob">
+    </div>
+    <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
+    <br>
+    <mat-checkbox formControlName="rgpdControl"></mat-checkbox>
+    <p>J'accepte que SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
+      Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
+    <span *ngIf="rgpdControl.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
+    <button type="button" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
+    <br><br>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>
+  </form>
+</mat-card>

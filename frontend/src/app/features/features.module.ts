@@ -36,6 +36,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {RgpdComponent} from './rgpd/rgpd.component';
 import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   imports: [
@@ -63,11 +64,12 @@ import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
     ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent,
-    MatSidenavComponent, ProgressSpinnerDialogComponent, SnackBarAbleComponent, RgpdComponent, RgpdDialogComponent
+    MatSidenavComponent, ProgressSpinnerDialogComponent, SnackBarAbleComponent, RgpdComponent, RgpdDialogComponent, FooterComponent
   ],
   exports: [
     MatToolbarComponent,
-    MatSidenavComponent
+    MatSidenavComponent,
+    FooterComponent
   ],
   providers: [AuthService],
   entryComponents: [ProgressSpinnerDialogComponent],

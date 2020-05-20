@@ -11,5 +11,4 @@ export class LegalComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

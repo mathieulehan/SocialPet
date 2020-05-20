@@ -15,3 +15,10 @@ mat-card {
 .example-full-width {
   width: 100% !important;
 }
+
+app-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}

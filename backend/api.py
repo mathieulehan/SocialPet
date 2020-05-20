@@ -152,7 +152,6 @@ def log_user():
 
     result = database.logIn(email, password)
     auth_token = utils.encode_auth_token(result['id'])
-    print(auth_token)
     if auth_token:
         response = {
             'status': 'success',
