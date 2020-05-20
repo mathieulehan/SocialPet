@@ -46,20 +46,27 @@ def storeImagePet(img, table, data):
         }
         return item
 
+    idRaceUser = retrieveRace(data['raceModel'])
+    if (idRaceUser == None):
+        idRaceUser = insertTable(data['raceModel'], "race", "race")
+
     idRace = retrieveRace(data['race'])
     if (idRace == None):
         idRace = insertTable(data['race'], "race", "race")
 
-    idCouleur = retrieveCouleur(data['couleur'])
-    if (idCouleur == None):
-        idCouleur = insertTable(data['couleur'], "socialpet_couleur", "couleur")
+    idCouleurs = []
+    for couleur in data['couleurs'] :
+        idCouleur = retrieveCouleur(couleur)
+        if (idCouleur == None):
+            idCouleur = insertTable(couleur, "socialpet_couleur", "couleur")
+        idCouleurs.append(idCouleur)
 
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "INSERT INTO " + table + "(img, idUser, idCouleur, idRace) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO " + table + "(img, idUser, idRace, idRaceUser) VALUES (%s, %s, %s, %s)"
     cursor = db.cursor()
 
     try:
-        result = cursor.execute(sql, [img, idUser, idCouleur, idRace])
+        result = cursor.execute(sql, [img, idUser, idRace, idRaceUser])
         db.commit()
         item = {
             "id": cursor.lastrowid,
@@ -88,20 +95,27 @@ def storeMultiImagePet(images, table, data):
         }
         return item
 
-    idRace = retrieveRace(data['race'])
+    idRace = retrieveRace(data['raceModel'])
     if (idRace == None):
-        idRace = insertTable(data['race'], "race", "race")
+        idRace = insertTable(data['raceModel'], "race", "race")
 
-    idCouleur = retrieveCouleur(data['couleur'])
-    if (idCouleur == None):
-        idCouleur = insertTable(data['couleur'], "socialpet_couleur", "couleur")
+    idRaceUser = retrieveRace(data['race'])
+    if (idRaceUser == None):
+        idRaceUser = insertTable(data['race'], "race", "race")
+
+    idCouleurs = []
+    for couleur in data['couleurs'] :
+        idCouleur = retrieveCouleur(couleur)
+        if (idCouleur == None):
+            idCouleur = insertTable(couleur, "socialpet_couleur", "couleur")
+        idCouleurs.append(idCouleur)
 
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "INSERT INTO " + table + "(img, idUser, idCouleur, idRace) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO " + table + "(img, idUser, idRace, idRaceUser) VALUES (%s, %s, %s, %s)"
 
     records_to_inserts = []
     for img in images:
-        records_to_inserts.append([img, idUser, idCouleur, idRace])
+        records_to_inserts.append([img, idUser, idRace, idRaceUser])
 
     cursor = db.cursor()
 
@@ -112,6 +126,21 @@ def storeMultiImagePet(images, table, data):
             "id": cursor.lastrowid,
             "table": table
         }
+
+        sql = "INSERT INTO couleur_image (idImage, idCouleur, idTable) VALUES (%s, %s, %s)"
+        lastId = cursor.lastrowid + 1 
+        firstId = lastId - len(images)
+        records_to_inserts = []
+
+        for idCouleur in idCouleurs :
+            for id in range(firstId, lastId):
+                records_to_inserts.append([id, idCouleur, table])
+        
+        print(records_to_inserts)
+        result = cursor.executemany(sql, records_to_inserts)
+        db.commit()
+
+
 
     except MySQLdb.Error as e:
         try:
@@ -129,23 +158,35 @@ def storeMultiImagePet(images, table, data):
 # return all picture for one table store in the database
 def getImage(table):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id "
+    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id " 
     cursor = db.cursor()
     resultExport = []
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
         for row in results:
+
+            sql = "SELECT * FROM socialpet_couleur as tab " 
+            sql += "INNER JOIN couleur_image as c1 ON tab.id = c1.idCouleur AND c1.idImage = " + str(row[0]) + " AND c1.idTable = \""+ table + "\""
+            cursor.execute(sql)
+            color_Result = cursor.fetchall()
+            color = []
+
+            for c in color_Result :
+                color.append(c[1])
+
             user = {
-                "id": row[2],
-                "email": row[5]
+                "id": row[3],
+                "email": row[10]
             }
 
             item = {
                 "id": row[0],
                 "img": row[1],
                 "table": table,
-                "user": user
+                "created_at" : row[6],
+                "user": user,
+                "color": color
             }
             resultExport.append(item)
 
@@ -213,7 +254,7 @@ def getImageForUser(table, user_id):
 
 # return all picture of animals store in the database
 def getAll():
-    CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
+    CATEGORIES = ['chat2', 'poule2', 'chien', 'cheval', 'lapin']
     result = []
     for table in CATEGORIES:
         temp = getImage(table)

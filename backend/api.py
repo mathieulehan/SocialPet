@@ -64,7 +64,7 @@ def insert_image():
     # Vérification de l'autorisation
     get_status()
 
-    CATEGORIES = {'chat': 0, 'poule2': 0, 'chien': 0, 'cheval': 0, 'lapin': 0}
+    CATEGORIES = {'chat2': 0, 'poule2': 0, 'chien': 0, 'cheval': 0, 'lapin': 0}
     img_base64 = []
     for img in request.json['images']:
         # Decode image
@@ -83,10 +83,7 @@ def insert_image():
 
     if espece == "chien":
         race = modelRace.my_dog_breed_detector('./img_temp.jpg')
-        if 'race' in request.json:
-            request.json['race'] = race
-        else:
-            request.json.setdefault('race', race)
+        request.json.setdefault('raceModel', race)
 
     # item = database.storeImagePet(image_base64_utf8, espece, request.json)
     item = database.storeMultiImagePet(img_base64, espece, request.json)
