@@ -7,6 +7,7 @@ import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component'
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {User} from '../../shared/models/user';
 import {AuthService} from '../../shared/services/auth.service';
+import {Animal} from '../../shared/models/animal';
 
 @Component({
   selector: 'app-show-all-images',
@@ -15,13 +16,16 @@ import {AuthService} from '../../shared/services/auth.service';
 })
 export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnInit, AfterViewInit {
   imagesData: ImageFromBack[];
+  animalsFound: Animal[];
+  animalsOwned: Animal[];
   base64Str = 'data:image/jpg;base64,';
   user: User;
   @ViewChild('container') theContainer;
   columnNum = 3;
   tileSize = 230;
 
-  constructor(private imageService: ImageService, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService) {
+  constructor(private imageService: ImageService, private sanitizer: DomSanitizer,
+              dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService) {
     super(snackBar, dialog);
   }
 
@@ -31,7 +35,7 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
       this.user = response.data;
       this.imageService.getImagesByUserId(this.user.user_id).subscribe(res => {
       this.imagesData = res.images;
-      this.sanitizeImages();
+      this.splitFoundAndOwned();
       this.hideSpinner();
       },
       error => {
@@ -41,12 +45,18 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
     });
   }
 
-  private sanitizeImages() {
-    this.imagesData.forEach(
-      image => {
-        image.sanitizedPath = (this.sanitizer.bypassSecurityTrustResourceUrl(this.base64Str + image.img));
+  private splitFoundAndOwned() {
+    this.animalsOwned = [];
+    this.animalsFound = [];
+    const previousDate = new Date();
+    let currentAnimal: Animal;
+    this.imagesData.forEach(image => {
+      if (previousDate !== image.created_at) {
+        image.isOwner === 1 ? this.animalsOwned.push(currentAnimal) : this.animalsFound.push(currentAnimal);
+        currentAnimal = new Animal(image);
       }
-      );
+      currentAnimal.addImage(image.img, this.sanitizer, this.base64Str);
+    });
   }
 
   setColNum() {
@@ -62,5 +72,4 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
   onResize(event) {
     this.setColNum();
   }
-
 }

@@ -8,7 +8,10 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
 import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {RgpdDialogComponent} from "../rgpd-dialog/rgpd-dialog.component";
+import {RgpdDialogComponent} from '../rgpd-dialog/rgpd-dialog.component';
+import {Image, ImageFromBack} from '../../shared/models/image';
+import {AuthService} from '../../shared/services/auth.service';
+import {ImageService} from '../../shared/services/image.service';
 
 @Component({
   selector: 'app-upload-form',
@@ -22,7 +25,6 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   species: string[];
   colors: string[];
   motifs: string[];
-  test: any;
   image: string | ArrayBuffer;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
@@ -35,7 +37,9 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
     photosControl: ['', Validators.required],
     rgpdControl: [false, Validators.requiredTrue]
   });
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar, private rgpdDialog: MatDialog) {
+
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar,
+              private rgpdDialog: MatDialog, private authService: AuthService, private imageService: ImageService) {
     super(snackBar, dialog);
   }
   ngOnInit(): void {
@@ -45,8 +49,24 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   }
 
   uploadAnimal() {
-    this.showSpinner();
-    this.hideSpinner();
+    const newAnimal = new Image();
+    for (const blob of this.generatedBlobs) {
+      newAnimal.images.push(blob);
+    }
+    this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
+      const user = response.data;
+      newAnimal.email = user.email;
+      newAnimal.couleur = this.colorControl.value[0];
+      this.showSpinner();
+      this.imageService.saveAnimal(newAnimal).subscribe(res => {
+          this.hideSpinner();
+          this.openSnackBar(res.item.table, 'OK');
+        },
+        error => {
+          this.hideSpinner();
+          this.openSnackBar(error.toString(), 'Oups');
+        });
+    });
   }
   get raceControl() {
     return this.uploadedAnimal.get('raceControl');
@@ -77,10 +97,9 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
     Array.from(files).forEach(file => {
       const myReader: FileReader = new FileReader();
       myReader.onloadend = (e) => {
-        this.generatedBlobs.push(myReader.result as string);
+        this.generatedBlobs.push(myReader.result.toString().substring(myReader.result.toString().indexOf('base64,') + 7));
         this.generatedBlobsDecoded.push(this.sanitizer.bypassSecurityTrustResourceUrl(myReader.result as string) as string);
       };
-      this.selectedFilesNames.push(file.name);
       myReader.readAsDataURL(file);
     });
   }
@@ -88,4 +107,5 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   openRgpdDialog() {
     this.rgpdDialog.open(RgpdDialogComponent);
   }
+
 }

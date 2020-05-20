@@ -55,3 +55,16 @@
     <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>
   </form>
 </mat-card>
+<span *ngIf="imagesData">Voici les animaux pouvant correspondre</span>
+  <mat-card *ngFor="let image of imagesData">
+    <mat-card>
+      <mat-card-title>
+        <span>{{image.specie}}</span><br>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <span>{{image.race.race}}, </span>
+        <span>{{image.couleur.couleur}}</span><br>
+      </mat-card-subtitle>
+      <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
+    </mat-card>
+  </mat-card>

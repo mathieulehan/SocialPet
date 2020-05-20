@@ -18,8 +18,8 @@ export class ImageService {
     return this.http.get<any>(this.baseUrl + 'images');
   }
 
-  getRelatedImages(animal: any): Observable<object> {
-    return this.http.post(this.baseUrl + 'perdu', animal);
+  getRelatedImages(animal: Image): Observable<any> {
+    return this.http.post<any>(this.baseUrl + 'perdu', animal);
   }
 
   deleteByUserId(userId: number): Observable<any> {

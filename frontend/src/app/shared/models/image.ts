@@ -21,4 +21,6 @@ export class ImageFromBack {
   race: Race;
   img: string;
   specie: string;
+  isOwner: number;
+  created_at: Date;
 }

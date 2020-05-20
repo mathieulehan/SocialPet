@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
 import {Motifs} from '../../shared/motifs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ImageService} from '../../shared/services/image.service';
-import {Image} from '../../shared/models/image';
+import {Image, ImageFromBack} from '../../shared/models/image';
 import {MatDialog} from '@angular/material/dialog';
 import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -23,7 +23,6 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   species: string[];
   colors: string[];
   motifs: string[];
-  modelResponse: any;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
@@ -34,6 +33,11 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
     photosControl: ['', Validators.required],
     rgpdControl: [false, Validators.requiredTrue]
   });
+  imagesData: ImageFromBack[];
+  base64Str = 'data:image/jpg;base64,';
+  @ViewChild('container') theContainer;
+  columnNum = 3;
+  tileSize = 230;
 
   constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService,
               dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService, private rgpdDialog: MatDialog) {
@@ -56,9 +60,11 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
         newAnimal.email = user.email;
         newAnimal.couleur = this.color.value[0];
         this.showSpinner();
-        this.imageService.saveAnimal(newAnimal).subscribe(res => {
+        this.imageService.getRelatedImages(newAnimal).subscribe(res => {
+          this.imagesData = res.images;
+          this.sanitizeImages();
           this.hideSpinner();
-          this.openSnackBar(res.item.table, 'OK');
+          this.openSnackBar('Voici les animaux pouvant ressembler', 'OK');
         },
       error => {
         this.hideSpinner();
@@ -97,6 +103,14 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
       };
       myReader.readAsDataURL(file);
     });
+  }
+
+  private sanitizeImages() {
+    this.imagesData.forEach(
+      image => {
+        image.sanitizedPath = (this.sanitizer.bypassSecurityTrustResourceUrl(this.base64Str + image.img));
+      }
+    );
   }
 
 }

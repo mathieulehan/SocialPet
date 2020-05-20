@@ -176,16 +176,16 @@ def getImageForUser(table, user_id):
         results = cursor.fetchall()
         for row in results:
             user = {
-                "user_id": row[2],
-                "email": row[7]
+                "user_id": row[3],
+                "email": row[8]
             }
             couleur = {
-                "id": row[3],
-                "couleur": row[8]
+                "id": row[4],
+                "couleur": row[9]
             }
             race = {
-                "id": row[4],
-                "race": row[6]
+                "id": row[5],
+                "race": row[7]
             }
             image = {
                 "id": row[0],
@@ -193,7 +193,8 @@ def getImageForUser(table, user_id):
                 "specie": table,
                 "user": user,
                 "couleur": couleur,
-                "race": race
+                "race": race,
+                "isOwner": row[2]
             }
             images.append(image)
 

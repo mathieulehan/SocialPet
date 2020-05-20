@@ -1,6 +1,25 @@
 <div #container>
+  <h3>Mes animaux</h3>
   <mat-grid-list [cols]="columnNum">
-    <mat-grid-tile *ngFor="let image of imagesData">
+    <mat-grid-tile *ngFor="let image of animalsOwned">
+      <mat-card>
+        <mat-card-title>
+          <span>{{image.specie}}</span><br>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span>{{image.race.race}}, </span>
+          <span>{{image.couleur.couleur}}</span><br>
+        </mat-card-subtitle>
+        <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<hr>
+<div #container>
+  <h3>Mes contributions</h3>
+  <mat-grid-list [cols]="columnNum">
+    <mat-grid-tile *ngFor="let image of animalsFound">
       <mat-card>
         <mat-card-title>
           <span>{{image.specie}}</span><br>

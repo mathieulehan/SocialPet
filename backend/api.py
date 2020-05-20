@@ -55,7 +55,7 @@ def get_images_for_user(user_id):
     return jsonify({'images': result}), 201
 
 
-# Post d'une image dans la base de donnée
+# Enregistrement d'un animal trouvé dans la base de donnée
 @app.route('/api/image', methods=['POST'])
 def insert_image():
     if not request.json or not 'images' in request.json or not 'email' in request.json:
@@ -96,13 +96,13 @@ def insert_image():
 # Post d'une image d'un animal perdu
 @app.route('/api/perdu', methods=['POST'])
 def get_perdu():
-    if not request.json or not 'img' in request.json:
+    if not request.json or not 'images' in request.json:
         abort(400)
 
     # Vérification de l'autorisation
     get_status()
 
-    image_base64 = request.json['img']
+    image_base64 = request.json['images'][0]
     image_base64 = image_base64.encode("utf-8")
 
     image_64_decode = base64.decodestring(image_base64)
@@ -112,7 +112,7 @@ def get_perdu():
     espece = model.get_espece('./img_temp.jpg')
     result = database.getImage(espece)
 
-    return jsonify({'image': result}), 201
+    return jsonify({'images': result}), 201
 
 
 # RGPD suppression photos animaux
