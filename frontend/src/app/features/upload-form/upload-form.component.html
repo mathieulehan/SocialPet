@@ -1,14 +1,21 @@
 <mat-card>
+  <mat-card-title>{{ title }}</mat-card-title>
+  <mat-card-content>
+    <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
+    <p> {{ speech }}</p>
+  </mat-card-content>
+</mat-card>
+<mat-card>
   <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="uploadAnimal()">
-    <mat-form-field class="example-full-width">
-      <mat-label>Espèce de votre animal</mat-label>
-      <mat-error *ngIf="specie.invalid">L'espèce de votre animal doit être renseignée</mat-error>
-      <mat-select formControlName="specie">
-        <mat-option *ngFor="let specie of species" [value]="specie">
-          {{specie}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <br>
+    <mat-radio-group  formControlName="specie">
+      <mat-radio-button class="specie-checkbox" value="chien">Chien</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="chat">Chat</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="lapin">Lapin</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="poule">Poule</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="cheval">Cheval</mat-radio-button>
+    </mat-radio-group>
+    <span *ngIf="specie.invalid" class="mat-error">Vous devez renseigner l'espèce de votre animal</span>
     <br>
     <mat-form-field class="example-full-width">
       <mat-label>Race de votre animal</mat-label>
@@ -47,15 +54,8 @@
     <p>SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
       Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
     <span *ngIf="rgpd.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
-    <button type="button" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
+    <button type="button" mat-raised-button color="primary" (click)="openRgpdDialog()">En savoir plus</button>
     <br><br>
     <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Enregistrer mon animal</button>
   </form>
-</mat-card>
-<mat-card>
-  <mat-card-title>{{ title }}</mat-card-title>
-  <mat-card-content>
-    <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
-    <p> {{ speech }}</p>
-  </mat-card-content>
 </mat-card>

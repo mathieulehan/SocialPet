@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
-  Social Pet
-  <button *ngIf="!userIsConnected" mat-button class="connectButton" [routerLink]="['/login']" skipLocationChange routerLinkActive="active">
-    <span class="material-icons">power_settings_new</span>Se connecter
+  <img src="../../../assets/socialPetLogo.png" height="100%">
+  <button mat-raised-button color="primary" *ngIf="!userIsConnected" mat-button class="connectButton" [routerLink]="['/login']" skipLocationChange routerLinkActive="active">
+    <span class="material-icons">power_settings_new</span>
   </button>
-  <button *ngIf="userIsConnected" mat-button class="connectButton" (click)="logOut()">
-    <span class="material-icons">power_settings_new</span>Se déconnecter
+  <button mat-raised-button color="primary" *ngIf="userIsConnected" mat-button class="connectButton" (click)="logOut()">
+    <span class="material-icons">power_settings_new</span>
   </button>
 </mat-toolbar>

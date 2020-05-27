@@ -69,7 +69,7 @@ $socialPetBrandSecondary: (
 
 /* ======== Angular material custom themes ======== */
 // mandatory stuff for theming
-$bv-palette-primary: mat-palette($socialPetBrandPrimary, 800, 100, A200);
+$bv-palette-primary: mat-palette($socialPetBrandPrimary, 200, 500, A200);
 $bv-palette-accent:  mat-palette($socialPetBrandSecondary);
 
 // include the custom theme components into a theme object

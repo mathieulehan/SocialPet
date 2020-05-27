@@ -6,3 +6,17 @@ body { font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-card {
   margin: 3rem;
 }
+
+p, li {
+  font-size: 20px;
+}
+
+mat-card-title {
+  color: #1f3d4c;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.material-icons {
+  color: white !important;
+}

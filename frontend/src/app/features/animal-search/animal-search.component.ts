@@ -79,6 +79,10 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
     return this.uploadedAnimal.get('rgpdControl');
   }
 
+  get specieControl() {
+    return this.uploadedAnimal.get('specieControl');
+  }
+
   changeListener($event): void {
     this.readThis($event.target);
   }

@@ -1,12 +1,17 @@
 mat-toolbar {
-  height: 5vh;
+  height: 10vh;
+  padding: 0px !important;
 }
 
 .connectButton {
   float: right;
-  margin-right: 40px;
   position: absolute;
   right: 0;
   width: 100px;
   height: 120px;
+  font-weight: bolder;
+}
+
+mat-toolbar {
+  background-image: url("../../../assets/banner3.jpg") !important;
 }

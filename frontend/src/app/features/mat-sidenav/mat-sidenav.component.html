@@ -8,27 +8,30 @@
     <mat-list>
       <mat-list-item>
         <span class="material-icons">home</span>
-        <button mat-button color="primary" [routerLink]="['']" skipLocationChange routerLinkActive="active">Accueil</button>
+        <button mat-button [routerLink]="['']" skipLocationChange routerLinkActive="active">Accueil</button>
       </mat-list-item>
       <mat-list-item *ngIf="userIsConnected">
         <span class="material-icons">find_in_page</span>
-        <button mat-button color="primary" [routerLink]="['/search']" skipLocationChange routerLinkActive="active">J'ai trouvé un animal</button>
+        <button mat-button [routerLink]="['/search']" skipLocationChange routerLinkActive="active">J'ai trouvé un animal</button>
       </mat-list-item>
       <mat-list-item *ngIf="userIsConnected">
         <span class="material-icons">save</span>
-        <button mat-button color="primary" [routerLink]="['/submit']" skipLocationChange routerLinkActive="active">Enregistrer mon animal</button>
+        <button mat-button [routerLink]="['/submit']" skipLocationChange routerLinkActive="active">Enregistrer mon animal</button>
       </mat-list-item>
       <mat-list-item>
         <span class="material-icons">group</span>
-        <button mat-button color="primary" [routerLink]="['/about']" skipLocationChange routerLinkActive="active">Qui sommes-nous ?</button>
+        <button mat-button [routerLink]="['/about']" skipLocationChange routerLinkActive="active">Qui sommes-nous ?</button>
       </mat-list-item>
       <mat-list-item *ngIf="userIsConnected">
         <span class="material-icons">collections</span>
-        <button mat-button color="primary" [routerLink]="['/images']" skipLocationChange routerLinkActive="active">Mes images</button>
+        <button mat-button [routerLink]="['/images']" skipLocationChange routerLinkActive="active">Mes images</button>
       </mat-list-item>
       <mat-list-item *ngIf="userIsConnected">
         <span class="material-icons">lock</span>
-        <button mat-button color="primary" [routerLink]="['/rgpd']" skipLocationChange routerLinkActive="active">(TEMP) RGPD</button>
+        <button mat-button [routerLink]="['/rgpd']" skipLocationChange routerLinkActive="active">RGPD</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button style="color: white;" mat-button color="primary" [routerLink]="['/legal']" skipLocationChange routerLinkActive="active">Mentions légales</button>
       </mat-list-item>
     </mat-list>
   </mat-sidenav>
