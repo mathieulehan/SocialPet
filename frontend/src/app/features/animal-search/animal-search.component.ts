@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Species} from '../../shared/species';
-import {Colors} from '../../shared/colors';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ImageService} from '../../shared/services/image.service';
 import {Image, ImageFromBack} from '../../shared/models/image';
@@ -25,7 +24,7 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
     raceControl: [''],
-    specieControl: [''],
+    specieControl: ['', Validators.required],
     colorControl: [''],
     photosControl: ['', Validators.required],
     rgpdControl: [false, Validators.requiredTrue]
@@ -43,7 +42,6 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
 
   ngOnInit(): void {
     this.species = Object.keys(Species);
-    this.colors = Object.keys(Colors);
   }
 
   searchAnimal() {

@@ -13,17 +13,27 @@
     <mat-form-field class="example-full-width">
       <mat-label>Race de votre animal</mat-label>
       <input matInput formControlName="race">
+      <mat-icon matSuffix>pets</mat-icon>
       <mat-error *ngIf="race.invalid">La race de votre animal doit être renseignée</mat-error>
     </mat-form-field>
     <br>
     <h4>Mon animal possède ces :</h4>
     <mat-form-field class="example-full-width">
       <mat-label>Couleur(s)</mat-label>
-      <mat-select formControlName="colors" multiple>
-        <mat-option *ngFor="let color of colorsStr" [value]="color">
-          {{color}}
-        </mat-option>
+      <mat-select multiple>
+        <mat-option style="color: white" value="Blanc" >Blanc</mat-option>
+        <mat-option style="color: brown" value="Marron" >Marron</mat-option>
+        <mat-option style="color: grey" value="Gris" >Gris</mat-option>
+        <mat-option style="color: black" value="Noir" >Noir</mat-option>
+        <mat-option style="color: #a86e64" value="Fauve" >Fauve</mat-option>
+        <mat-option style="color: blue" value="Bleu" >Bleu</mat-option>
+        <mat-option style="color: orangered" value="Roux" >Roux</mat-option>
+        <mat-option style="color: #7e5835" value="Cannelle" >Cannelle</mat-option>
+        <mat-option style="color: chocolate" value="Chocolat" >Chocolat</mat-option>
+        <mat-option style="color: #fcefc6" value="Crème" >Crème</mat-option>
+        <mat-option value="Autre" >Autre</mat-option>
       </mat-select>
+      <mat-icon matSuffix>invert_colors</mat-icon>
       <mat-error *ngIf="colors.invalid">La couleur de votre animal doit être renseignée</mat-error>
     </mat-form-field>
     <h4>Photos de mon animal :</h4>

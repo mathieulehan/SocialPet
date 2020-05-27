@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Species} from '../../shared/species';
-import {Colors} from '../../shared/colors';
 import {FormBuilder, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {ProgressSpinnerDialogComponent} from '../progress-spinner-dialog/progress-spinner-dialog-component';
 import {SnackBarAbleComponent} from '../snack-bar-able/snack-bar-able.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {RgpdDialogComponent} from '../rgpd-dialog/rgpd-dialog.component';
-import {Image, ImageFromBack} from '../../shared/models/image';
+import {Image} from '../../shared/models/image';
 import {AuthService} from '../../shared/services/auth.service';
 import {ImageService} from '../../shared/services/image.service';
 
@@ -40,7 +38,6 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   }
   ngOnInit(): void {
     this.species = Object.keys(Species);
-    this.colorsStr = Object.keys(Colors);
   }
 
   uploadAnimal() {

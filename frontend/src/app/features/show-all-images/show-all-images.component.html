@@ -1,5 +1,5 @@
 <div #container>
-  <h3>Mes animaux</h3>
+  <h3><span class="material-icons">folder_shared</span>Mes contributions</h3>
   <div *ngFor="let image of animalsOwned">
     <mat-card class="scrollable-content">
       <mat-card-subtitle>
@@ -14,7 +14,7 @@
 </div>
 <hr>
 <div #container>
-  <h3>Mes contributions</h3>
+  <h3><span class="material-icons">folder</span>Mes contributions</h3>
   <mat-grid-list [cols]="columnNum">
     <mat-grid-tile *ngFor="let image of animalsFound">
       <mat-card class="scrollable-content">

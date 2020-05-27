@@ -37,32 +37,34 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {RgpdComponent} from './rgpd/rgpd.component';
 import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
 import { FooterComponent } from './footer/footer.component';
-import {OwlModule} from "ngx-owl-carousel";
+import {OwlModule} from 'ngx-owl-carousel';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCardModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    MatListModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatIconModule,
-    MatCheckboxModule,
-    OwlModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatCardModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatIconModule,
+        MatCheckboxModule,
+        OwlModule,
+        MatRadioModule
+    ],
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,
     ConnectionComponent, ShowAllImagesComponent, AuthComponent, AdminComponent, MatToolbarComponent,

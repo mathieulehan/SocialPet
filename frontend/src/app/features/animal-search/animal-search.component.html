@@ -6,28 +6,37 @@
 </mat-card>
 <mat-card>
   <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="searchAnimal()">
-    <mat-form-field class="example-full-width">
-      <mat-label>Espèce (si connue)</mat-label>
-      <mat-select formControlName="specieControl">
-        <mat-option *ngFor="let specie of species" [value]="specie">
-          {{specie}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
     <br>
+    <mat-radio-group  formControlName="specieControl">
+      <mat-radio-button class="specie-checkbox" value="chien">Chien</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="chat">Chat</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="lapin">Lapin</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="poule">Poule</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="cheval">Cheval</mat-radio-button>
+    </mat-radio-group>
     <mat-form-field class="example-full-width">
       <mat-label>Race (si connue)</mat-label>
       <input matInput formControlName="raceControl">
+      <mat-icon matSuffix>pets</mat-icon>
     </mat-form-field>
     <br>
     <h4>L'animal possède ces :</h4>
     <mat-form-field class="example-full-width">
       <mat-label>Couleur(s)</mat-label>
       <mat-select formControlName="colorControl" multiple>
-        <mat-option *ngFor="let color of colors" [value]="color">
-          {{color}}
-        </mat-option>
+        <mat-option style="color: white" value="Blanc" >Blanc</mat-option>
+        <mat-option style="color: brown" value="Marron" >Marron</mat-option>
+        <mat-option style="color: grey" value="Gris" >Gris</mat-option>
+        <mat-option style="color: black" value="Noir" >Noir</mat-option>
+        <mat-option style="color: #a86e64" value="Fauve" >Fauve</mat-option>
+        <mat-option style="color: blue" value="Bleu" >Bleu</mat-option>
+        <mat-option style="color: orangered" value="Roux" >Roux</mat-option>
+        <mat-option style="color: #7e5835" value="Cannelle" >Cannelle</mat-option>
+        <mat-option style="color: chocolate" value="Chocolat" >Chocolat</mat-option>
+        <mat-option style="color: #fcefc6" value="Crème" >Crème</mat-option>
+        <mat-option value="Autre" >Autre</mat-option>
       </mat-select>
+      <mat-icon matSuffix>invert_colors</mat-icon>
     </mat-form-field>
     <h4>Photos de l'animal en question :</h4>
     <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
@@ -46,15 +55,15 @@
   </form>
 </mat-card>
 <span *ngIf="imagesData">Voici les animaux pouvant correspondre</span>
-  <mat-card *ngFor="let image of imagesData">
-    <mat-card>
-      <mat-card-title>
-        <span>{{image.specie}}</span><br>
-      </mat-card-title>
-      <mat-card-subtitle>
-        <span>{{image.race.race}}, </span>
-        <span>{{image.couleur.couleur}}</span><br>
-      </mat-card-subtitle>
-      <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
-    </mat-card>
+<mat-card *ngFor="let image of imagesData">
+  <mat-card>
+    <mat-card-title>
+      <span>{{image.specie}}</span><br>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span>{{image.race.race}}, </span>
+      <span>{{image.couleur.couleur}}</span><br>
+    </mat-card-subtitle>
+    <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
   </mat-card>
+</mat-card>
