@@ -40,8 +40,8 @@
       <mat-icon matSuffix>invert_colors</mat-icon>
     </mat-form-field>
     <h4>Photos de l'animal en question : <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)"></h4>
-    <div *ngFor="let blob of generatedBlobsDecoded">
-      <img width="32" [src]="blob" alt="blob">
+    <div>
+      <img *ngFor="let blob of generatedBlobsDecoded" width="32" [src]="blob" alt="blob">
     </div>
     <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
     <br>
@@ -62,7 +62,7 @@
     </mat-card-title>
     <mat-card-subtitle>
       <span>{{image.race.race}}, </span>
-      <span>{{image.couleur.couleur}}</span><br>
+      <span *ngFor="let color of image.colors">{{color}}</span><br>
     </mat-card-subtitle>
     <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
   </mat-card>

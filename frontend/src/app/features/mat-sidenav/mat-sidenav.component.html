@@ -1,5 +1,5 @@
 <div [ngStyle]="{'display' : (screenWidth > 840) ? 'none' : 'block'}">
-  <button mat-button>
+  <button mat-button style="background-color: #a2b6be">
     <mat-icon aria-hidden="false" aria-label="Ouvrir le menu" (click)="sidenav.open()">menu</mat-icon>
   </button>
 </div>
@@ -26,12 +26,14 @@
         <span class="material-icons">collections</span>
         <button mat-button [routerLink]="['/images']" skipLocationChange routerLinkActive="active">Mes images</button>
       </mat-list-item>
+      <mat-divider></mat-divider>
       <mat-list-item *ngIf="userIsConnected">
         <span class="material-icons">lock</span>
         <button mat-button [routerLink]="['/rgpd']" skipLocationChange routerLinkActive="active">RGPD</button>
       </mat-list-item>
       <mat-list-item>
-        <button style="color: white;" mat-button color="primary" [routerLink]="['/legal']" skipLocationChange routerLinkActive="active">Mentions légales</button>
+        <span class="material-icons">bookmarks</span>
+        <button mat-button [routerLink]="['/legal']" skipLocationChange routerLinkActive="active">Mentions légales</button>
       </mat-list-item>
     </mat-list>
   </mat-sidenav>

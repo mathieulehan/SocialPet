@@ -17,7 +17,9 @@ import {RgpdDialogComponent} from '../rgpd-dialog/rgpd-dialog.component';
 })
 export class AnimalSearchComponent extends SnackBarAbleComponent implements OnInit {
   title = 'Recherche d\'animal';
-  speech = 'Voici pourquoi il est important d\'effectuer un traitement sur les images avant de nous les fournir.';
+  speech = 'En fournissant ici plusieurs photos du même animal, vous augmentez les chances que le bon propriétaire. ' +
+    'Un algorithme va analyse les images et retrouver les animaux y ressemblant le plus. ' +
+    'Vous aurez le dernier mot et pourrez sélectionner le bon animal parmi ceux qui vous seront proposés par SocialPet.';
   species: string[];
   colors: string[];
   generatedBlobs: string[] = [];

@@ -1,7 +1,6 @@
 <mat-card>
   <mat-card-title>{{ title }}</mat-card-title>
   <mat-card-content>
-    <img width="540" alt="Upload pet image" src="../../../assets/upload_pet.jpg">
     <p> {{ speech }}</p>
   </mat-card-content>
 </mat-card>
@@ -9,11 +8,11 @@
   <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="uploadAnimal()">
     <br>
     <mat-radio-group  formControlName="specie">
-      <mat-radio-button class="specie-checkbox" value="chien">Chien</mat-radio-button>
-      <mat-radio-button class="specie-checkbox" value="chat">Chat</mat-radio-button>
-      <mat-radio-button class="specie-checkbox" value="lapin">Lapin</mat-radio-button>
-      <mat-radio-button class="specie-checkbox" value="poule">Poule</mat-radio-button>
-      <mat-radio-button class="specie-checkbox" value="cheval">Cheval</mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="chien"><img class="specie-checkbox-image" src="../../../assets/dog.jpg" alt="dog"></mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="chat"><img class="specie-checkbox-image" src="../../../assets/cat.jpg" alt="cat"></mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="lapin"><img class="specie-checkbox-image" src="../../../assets/rabbit.jpg" alt="rabbit"></mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="poule"><img class="specie-checkbox-image" src="../../../assets/chicken.png" alt="chicken"></mat-radio-button>
+      <mat-radio-button class="specie-checkbox" value="cheval"><img class="specie-checkbox-image" src="../../../assets/horse.jpg" alt="horse"></mat-radio-button>
     </mat-radio-group>
     <span *ngIf="specie.invalid" class="mat-error">Vous devez renseigner l'espèce de votre animal</span>
     <br>
@@ -43,17 +42,16 @@
       <mat-icon matSuffix>invert_colors</mat-icon>
       <mat-error *ngIf="colors.invalid">La couleur de votre animal doit être renseignée</mat-error>
     </mat-form-field>
-    <h4>Photos de mon animal :</h4>
-    <input type="file" formControlName="images" multiple (change)="changeListener($event)">
-    <div *ngFor="let blob of generatedBlobsDecoded">
-      <img width="32" [src]="blob" alt="blob">
+    <h4>Photos de mon animal : <input type="file" formControlName="images" multiple (change)="changeListener($event)"></h4>
+    <div>
+      <img *ngFor="let blob of generatedBlobsDecoded" width="32" [src]="blob" alt="blob">
     </div>
     <mat-error *ngIf="images.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</mat-error>
     <br>
-    <mat-checkbox formControlName="rgpd">J'accepte le traitement de mes images par l'algorithme de SocialPet.</mat-checkbox>
-    <p>SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
-      Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
+    <mat-checkbox formControlName="rgpd">J'accepte que SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
+      <br>Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</mat-checkbox>
     <span *ngIf="rgpd.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
+    <br>
     <button type="button" mat-raised-button color="primary" (click)="openRgpdDialog()">En savoir plus</button>
     <br><br>
     <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Enregistrer mon animal</button>

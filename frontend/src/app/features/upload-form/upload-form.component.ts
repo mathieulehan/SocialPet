@@ -17,8 +17,8 @@ import {ImageService} from '../../shared/services/image.service';
 })
 export class UploadFormComponent extends SnackBarAbleComponent implements OnInit {
   title = 'Participer au projet banque de données Social Pet';
-  speech = 'Voici pourquoi c\'est important de fournir plusieurs images, voici comment elles sont traitées et comment ces informations personnelles ' +
-    'permettrons de vous contacter si votre animal a le malheur de disparaître.';
+  speech = 'Les images que vous allez nous transmettre seront analysées par un algorithme qui déterminera les caractéristiques de votre animal.' +
+    ' Ces informations seront ensuite utilisées dans le cas où votre animal est retrouvé par un internaute. Ce dernier sera en mesure de vous contacter.';
   species: string[];
   colorsStr: string[];
   image: string | ArrayBuffer;
