@@ -1,6 +1,5 @@
 <mat-card>
   <mat-card-title>{{ title }}</mat-card-title>
-  <img mat-card-image alt="Upload pet image" src="../../../assets/lost_cat.jpg">
   <mat-card-content>
     <p> {{ speech }}</p>
   </mat-card-content>
@@ -27,15 +26,6 @@
       <mat-select formControlName="colorControl" multiple>
         <mat-option *ngFor="let color of colors" [value]="color">
           {{color}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <h4>Disposées selon ce :</h4>
-    <mat-form-field class="example-full-width">
-      <mat-label>Motif</mat-label>
-      <mat-select formControlName="motifControl" multiple>
-        <mat-option *ngFor="let motif of motifs" [value]="motif">
-          {{motif}}
         </mat-option>
       </mat-select>
     </mat-form-field>

@@ -1,0 +1,79 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$socialPetBrandPrimary: (
+  50 : #e9edef,
+  100 : #c7d3d8,
+  200 : #a2b6be,
+  300 : #7d98a3,
+  400 : #618290,
+  500 : #456c7c,
+  600 : #3e6474,
+  700 : #365969,
+  800 : #2e4f5f,
+  900 : #1f3d4c,
+  A100 : #4ee8ff,
+  A200 : #11e0ff,
+  A400 : #00d6f7,
+  A700 : #00c9e7,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$socialPetBrandSecondary: (
+  50 : #e6f5f6,
+  100 : #c1e7e9,
+  200 : #98d7da,
+  300 : #6fc7cb,
+  400 : #50bbbf,
+  500 : #31afb4,
+  600 : #2ca8ad,
+  700 : #259fa4,
+  800 : #1f969c,
+  900 : #13868c,
+  A100 : #c0fbff,
+  A200 : #8df8ff,
+  A400 : #5af5ff,
+  A700 : #41f4ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+/* ======== Angular material custom themes ======== */
+// mandatory stuff for theming
+$bv-palette-primary: mat-palette($socialPetBrandPrimary, 800, 100, A200);
+$bv-palette-accent:  mat-palette($socialPetBrandSecondary);
+
+// include the custom theme components into a theme object
+$bv-theme: mat-light-theme($bv-palette-primary, $bv-palette-accent);
+
+// include the custom theme object into the angular material theme
+@include angular-material-theme($bv-theme);

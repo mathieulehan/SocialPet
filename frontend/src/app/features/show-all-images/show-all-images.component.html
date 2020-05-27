@@ -1,34 +1,32 @@
 <div #container>
   <h3>Mes animaux</h3>
-  <mat-grid-list [cols]="columnNum">
-    <mat-grid-tile *ngFor="let image of animalsOwned">
-      <mat-card>
-        <mat-card-title>
-          <span>{{image.specie}}</span><br>
-        </mat-card-title>
-        <mat-card-subtitle>
-          <span>{{image.race.race}}, </span>
-          <span>{{image.couleur.couleur}}</span><br>
-        </mat-card-subtitle>
-        <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <div *ngFor="let image of animalsOwned">
+    <mat-card class="scrollable-content">
+      <mat-card-subtitle>
+        <span>{{image?.race.race}}, {{image?.specie}}</span>
+        <div *ngFor="let color of image?.colors"><span>{{color.couleur}}</span></div><br>
+      </mat-card-subtitle>
+      <div *ngFor="let sanitizedPath of image.sanitizedPaths">
+        <img mat-card-image [src]="sanitizedPath" alt="{{image?.id}}">
+      </div>
+    </mat-card>
+  </div>
 </div>
 <hr>
 <div #container>
   <h3>Mes contributions</h3>
   <mat-grid-list [cols]="columnNum">
     <mat-grid-tile *ngFor="let image of animalsFound">
-      <mat-card>
-        <mat-card-title>
-          <span>{{image.specie}}</span><br>
-        </mat-card-title>
+      <mat-card class="scrollable-content">
         <mat-card-subtitle>
-          <span>{{image.race.race}}, </span>
-          <span>{{image.couleur.couleur}}</span><br>
+          <span>{{image?.race.race}}, {{image?.specie}}</span>
+          <div *ngFor="let color of image?.colors"><span>{{color.couleur}}</span></div><br>
         </mat-card-subtitle>
-        <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
+        <mat-grid-list cols="2">
+          <mat-grid-tile *ngFor="let sanitizedPath of image.sanitizedPaths">
+            <img mat-card-image [src]="sanitizedPath" alt="{{image?.id}}">
+          </mat-grid-tile>
+        </mat-grid-list>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>

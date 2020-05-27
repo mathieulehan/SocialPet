@@ -2,8 +2,8 @@
   <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="uploadAnimal()">
     <mat-form-field class="example-full-width">
       <mat-label>Espèce de votre animal</mat-label>
-      <mat-error *ngIf="specieControl.invalid">L'espèce de votre animal doit être renseignée</mat-error>
-      <mat-select formControlName="specieControl">
+      <mat-error *ngIf="specie.invalid">L'espèce de votre animal doit être renseignée</mat-error>
+      <mat-select formControlName="specie">
         <mat-option *ngFor="let specie of species" [value]="specie">
           {{specie}}
         </mat-option>
@@ -12,41 +12,31 @@
     <br>
     <mat-form-field class="example-full-width">
       <mat-label>Race de votre animal</mat-label>
-      <input matInput formControlName="raceControl">
-      <mat-error *ngIf="raceControl.invalid">La race de votre animal doit être renseignée</mat-error>
+      <input matInput formControlName="race">
+      <mat-error *ngIf="race.invalid">La race de votre animal doit être renseignée</mat-error>
     </mat-form-field>
     <br>
     <h4>Mon animal possède ces :</h4>
     <mat-form-field class="example-full-width">
       <mat-label>Couleur(s)</mat-label>
-      <mat-select formControlName="colorControl" multiple>
-        <mat-option *ngFor="let color of colors" [value]="color">
+      <mat-select formControlName="colors" multiple>
+        <mat-option *ngFor="let color of colorsStr" [value]="color">
           {{color}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="colorControl.invalid">La couleur de votre animal doit être renseignée</mat-error>
-    </mat-form-field>
-    <h4>Disposées selon ce :</h4>
-    <mat-form-field class="example-full-width">
-      <mat-label>Motif</mat-label>
-      <mat-select formControlName="motifControl" multiple>
-        <mat-option *ngFor="let motif of motifs" [value]="motif">
-          {{motif}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="motifControl.invalid">Le motif de votre animal doit être renseigné</mat-error>
+      <mat-error *ngIf="colors.invalid">La couleur de votre animal doit être renseignée</mat-error>
     </mat-form-field>
     <h4>Photos de mon animal :</h4>
-    <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)">
+    <input type="file" formControlName="images" multiple (change)="changeListener($event)">
     <div *ngFor="let blob of generatedBlobsDecoded">
       <img width="32" [src]="blob" alt="blob">
     </div>
-    <mat-error *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</mat-error>
+    <mat-error *ngIf="images.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</mat-error>
     <br>
-    <mat-checkbox formControlName="rgpdControl">J'accepte le traitement de mes images par l'algorithme de SocialPet.</mat-checkbox>
+    <mat-checkbox formControlName="rgpd">J'accepte le traitement de mes images par l'algorithme de SocialPet.</mat-checkbox>
     <p>SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
       Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</p>
-    <span *ngIf="rgpdControl.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
+    <span *ngIf="rgpd.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
     <button type="button" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
     <br><br>
     <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Enregistrer mon animal</button>

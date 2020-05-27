@@ -18,7 +18,7 @@ export class Animal {
   id: number;
   sanitizedPaths: SafeResourceUrl[];
   user: User;
-  couleur: Color[];
+  colors: Color[];
   race: Race;
   specie: string;
   isOwner: number;

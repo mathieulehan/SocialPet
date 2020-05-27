@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
-import {Motifs} from '../../shared/motifs';
 import {FormBuilder, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -23,19 +22,16 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   speech = 'Voici pourquoi c\'est important de fournir plusieurs images, voici comment elles sont traitées et comment ces informations personnelles ' +
     'permettrons de vous contacter si votre animal a le malheur de disparaître.';
   species: string[];
-  colors: string[];
-  motifs: string[];
+  colorsStr: string[];
   image: string | ArrayBuffer;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
-  selectedFilesNames: string[] = [];
   uploadedAnimal = this.fb.group({
-    raceControl: ['', Validators.required],
-    specieControl: ['', Validators.required],
-    colorControl: ['', Validators.required],
-    motifControl: ['', Validators.required],
-    photosControl: ['', Validators.required],
-    rgpdControl: [false, Validators.requiredTrue]
+    race: ['', Validators.required],
+    specie: ['', Validators.required],
+    colors: ['', Validators.required],
+    images: ['', Validators.required],
+    rgpd: [false, Validators.requiredTrue]
   });
 
   constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, dialog: MatDialog, snackBar: MatSnackBar,
@@ -44,20 +40,20 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   }
   ngOnInit(): void {
     this.species = Object.keys(Species);
-    this.colors = Object.keys(Colors);
-    this.motifs = Object.keys(Motifs);
+    this.colorsStr = Object.keys(Colors);
   }
 
   uploadAnimal() {
-    const newAnimal = new Image();
+    const newAnimal: Image = this.uploadedAnimal.value;
+    newAnimal.images = [];
     for (const blob of this.generatedBlobs) {
       newAnimal.images.push(blob);
     }
     this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
       const user = response.data;
       newAnimal.email = user.email;
-      newAnimal.couleur = this.colorControl.value[0];
       this.showSpinner();
+      console.log(newAnimal);
       this.imageService.saveAnimal(newAnimal).subscribe(res => {
           this.hideSpinner();
           this.openSnackBar(res.item.table, 'OK');
@@ -68,24 +64,21 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
         });
     });
   }
-  get raceControl() {
-    return this.uploadedAnimal.get('raceControl');
+  get race() {
+    return this.uploadedAnimal.get('race');
   }
-  get specieControl() {
-    return this.uploadedAnimal.get('specieControl');
+  get specie() {
+    return this.uploadedAnimal.get('specie');
   }
-  get colorControl() {
-    return this.uploadedAnimal.get('colorControl');
+  get colors() {
+    return this.uploadedAnimal.get('colors');
   }
-  get motifControl() {
-    return this.uploadedAnimal.get('motifControl');
-  }
-  get photosControl() {
-    return this.uploadedAnimal.get('photosControl');
+  get images() {
+    return this.uploadedAnimal.get('images');
   }
 
-  get rgpdControl() {
-    return this.uploadedAnimal.get('rgpdControl');
+  get rgpd() {
+    return this.uploadedAnimal.get('rgpd');
   }
 
   changeListener($event): void {

@@ -23,6 +23,7 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
   @ViewChild('container') theContainer;
   columnNum = 3;
   tileSize = 230;
+  mySlideOptions = {items: 1, dots: true, nav: true};
 
   constructor(private imageService: ImageService, private sanitizer: DomSanitizer,
               dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService) {
@@ -35,7 +36,7 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
       this.user = response.data;
       this.imageService.getImagesByUserId(this.user.user_id).subscribe(res => {
       this.imagesData = res.images;
-      this.splitFoundAndOwned();
+      this.splitOwnedAndFoundAnimals();
       this.hideSpinner();
       },
       error => {
@@ -45,18 +46,26 @@ export class ShowAllImagesComponent extends SnackBarAbleComponent implements OnI
     });
   }
 
-  private splitFoundAndOwned() {
+  private splitOwnedAndFoundAnimals() {
     this.animalsOwned = [];
     this.animalsFound = [];
-    const previousDate = new Date();
+    let previousDate = new Date();
     let currentAnimal: Animal;
+    console.log(this.imagesData);
     this.imagesData.forEach(image => {
       if (previousDate !== image.created_at) {
-        image.isOwner === 1 ? this.animalsOwned.push(currentAnimal) : this.animalsFound.push(currentAnimal);
+        previousDate = image.created_at;
         currentAnimal = new Animal(image);
+        if (image.isOwner === 1) {
+          this.animalsOwned.push(currentAnimal);
+        } else if (image.isOwner === 0) {
+          this.animalsFound.push(currentAnimal);
+        }
       }
       currentAnimal.addImage(image.img, this.sanitizer, this.base64Str);
     });
+    console.log(this.animalsOwned);
+    console.log(this.animalsFound);
   }
 
   setColNum() {

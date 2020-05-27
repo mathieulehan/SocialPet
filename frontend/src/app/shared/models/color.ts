@@ -1,4 +1,4 @@
 export class Color {
-  id: number;
+  id?: number;
   couleur: string;
 }

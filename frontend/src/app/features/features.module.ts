@@ -37,6 +37,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {RgpdComponent} from './rgpd/rgpd.component';
 import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import {OwlModule} from "ngx-owl-carousel";
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { FooterComponent } from './footer/footer.component';
     MatDialogModule,
     MatSnackBarModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    OwlModule
   ],
   declarations: [
     AnimalSearchComponent, HomeComponent, NoPageFoundComponent, UploadFormComponent, AboutUsComponent, LegalComponent,

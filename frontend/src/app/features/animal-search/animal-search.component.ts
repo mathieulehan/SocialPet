@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Species} from '../../shared/species';
 import {Colors} from '../../shared/colors';
-import {Motifs} from '../../shared/motifs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ImageService} from '../../shared/services/image.service';
 import {Image, ImageFromBack} from '../../shared/models/image';
@@ -22,14 +21,12 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   speech = 'Voici pourquoi il est important d\'effectuer un traitement sur les images avant de nous les fournir.';
   species: string[];
   colors: string[];
-  motifs: string[];
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
     raceControl: [''],
     specieControl: [''],
     colorControl: [''],
-    motifControl: [''],
     photosControl: ['', Validators.required],
     rgpdControl: [false, Validators.requiredTrue]
   });
@@ -47,7 +44,6 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   ngOnInit(): void {
     this.species = Object.keys(Species);
     this.colors = Object.keys(Colors);
-    this.motifs = Object.keys(Motifs);
   }
 
   searchAnimal() {
@@ -58,7 +54,7 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
     this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
         const user = response.data;
         newAnimal.email = user.email;
-        newAnimal.couleur = this.color.value[0];
+        newAnimal.colors = this.color.value;
         this.showSpinner();
         this.imageService.getRelatedImages(newAnimal).subscribe(res => {
           this.imagesData = res.images;

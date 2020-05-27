@@ -9,15 +9,17 @@ export class Image {
   email: string;
   sanitizedPath?: SafeResourceUrl[];
   item: any;
-  couleur: string;
+  colors: Color[];
   img?: string[];
+  race: string;
+  motif: string;
 }
 
 export class ImageFromBack {
   id: number;
   sanitizedPath?: SafeResourceUrl;
   user: User;
-  couleur: Color;
+  colors: Color[];
   race: Race;
   img: string;
   specie: string;

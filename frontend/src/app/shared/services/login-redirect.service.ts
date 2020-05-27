@@ -7,8 +7,13 @@ export class LoginRedirectService implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
   canActivate(): boolean {
     if (localStorage.getItem('ACCESS_TOKEN')) {
-      this.router.navigateByUrl('/status');
-      return false;
+      this.auth.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(res => {
+        console.log(res);
+        return false;
+      }, err => {
+        console.log(err);
+        return true;
+      });
     } else {
       return true;
     }
