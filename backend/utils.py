@@ -6,7 +6,7 @@ import api
 def encode_auth_token(user_id):
     try:
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=0),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=365, seconds=0),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
         }
@@ -34,12 +34,23 @@ def decode_auth_token(auth_token):
     except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
 
-def loadRaceDog() :
+
+def loadRaceDog():
     fichier = open("./model/BreedDog.txt", "r")
     raceChien = []
 
-    for ligne in fichier :
+    for ligne in fichier:
         raceChien.append(ligne)
-    
+
     return raceChien
+
+
+def loadRaceCat():
+    fichier = open("./model/BreedCat.txt", "r")
+    raceCat = []
+
+    for ligne in fichier:
+        raceCat.append(ligne)
+
+    return raceCat
 

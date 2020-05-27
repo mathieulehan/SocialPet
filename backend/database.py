@@ -55,7 +55,7 @@ def storeImagePet(img, table, data):
         idRace = insertTable(data['race'], "race", "race")
 
     idCouleurs = []
-    for couleur in data['couleurs'] :
+    for couleur in data['colors'] :
         idCouleur = retrieveCouleur(couleur)
         if (idCouleur == None):
             idCouleur = insertTable(couleur, "socialpet_couleur", "couleur")
@@ -87,7 +87,7 @@ def storeImagePet(img, table, data):
 
 
 # store multiple picture
-def storeMultiImagePet(images, table, data):
+def storeMultiImagePet(images, table, data, isOwner):
     idUser = retrieveUser(data['email'])
     if (idUser == None):
         item = {
@@ -104,18 +104,18 @@ def storeMultiImagePet(images, table, data):
         idRaceUser = insertTable(data['race'], "race", "race")
 
     idCouleurs = []
-    for couleur in data['couleurs'] :
+    for couleur in data['colors'] :
         idCouleur = retrieveCouleur(couleur)
         if (idCouleur == None):
             idCouleur = insertTable(couleur, "socialpet_couleur", "couleur")
         idCouleurs.append(idCouleur)
 
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "INSERT INTO " + table + "(img, idUser, idRace, idRaceUser) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO " + table + "(img, idUser, idRace, idRaceUser, uploadedByOwner) VALUES (%s, %s, %s, %s, %s)"
 
     records_to_inserts = []
     for img in images:
-        records_to_inserts.append([img, idUser, idRace, idRaceUser])
+        records_to_inserts.append([img, idUser, idRace, idRaceUser, isOwner])
 
     cursor = db.cursor()
 
@@ -186,7 +186,7 @@ def getImage(table):
                 "table": table,
                 "created_at" : row[6],
                 "user": user,
-                "color": color
+                "colors": color
             }
             resultExport.append(item)
 
@@ -207,8 +207,9 @@ def getImage(table):
 # returns all pictures for one table store & one given user in the database
 def getImageForUser(table, user_id):
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "SELECT * FROM " + table + " as tab INNER JOIN race ON tab.idRace = race.id INNER JOIN socialpet_couleur ON tab.idCouleur = socialpet_couleur.id " \
-                                     "INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id  WHERE idUser = " \
+    sql = "SELECT * FROM " + table + " as tab INNER JOIN race ON tab.idRace = race.id " \
+                                     "INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id " \
+                                     "WHERE idUser = " \
           + str(user_id)
     cursor = db.cursor()
     images = []
@@ -216,17 +217,28 @@ def getImageForUser(table, user_id):
         cursor.execute(sql)
         results = cursor.fetchall()
         for row in results:
+            sql = "SELECT * FROM socialpet_couleur as tab "
+            sql += "INNER JOIN couleur_image as c1 ON tab.id = c1.idCouleur AND c1.idImage = " + str(row[0]) + " AND c1.idTable = \""+ table + "\""
+            cursor.execute(sql)
+            color_Result = cursor.fetchall()
+            color = []
+
+            for c in color_Result :
+                color.append(c[1])
+
             user = {
                 "user_id": row[3],
-                "email": row[8]
+                "name": row[10],
+                "lastname": row[11],
+                "email": row[12],
             }
             couleur = {
                 "id": row[4],
-                "couleur": row[9]
+                "colors": color
             }
             race = {
                 "id": row[5],
-                "race": row[7]
+                "race": row[8]
             }
             image = {
                 "id": row[0],
@@ -235,7 +247,8 @@ def getImageForUser(table, user_id):
                 "user": user,
                 "couleur": couleur,
                 "race": race,
-                "isOwner": row[2]
+                "isOwner": row[2],
+                "created_at": row[6]
             }
             images.append(image)
 
@@ -267,7 +280,7 @@ def getAll():
 
 # return all picture of animals store in the database
 def getAllForUser(user_id):
-    CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
+    CATEGORIES = ['chat2', 'poule2', 'chien', 'cheval', 'lapin']
     result = []
     for table in CATEGORIES:
         temp = getImageForUser(table, user_id)
@@ -417,7 +430,7 @@ def deleteAnimal(user_id, table):
 
 
 def deleteAll(user_id):
-    CATEGORIES = ['chat', 'poule2', 'chien', 'cheval', 'lapin']
+    CATEGORIES = ['chat2', 'poule2', 'chien', 'cheval', 'lapin']
     result = 0
     for table in CATEGORIES:
         result = result + deleteAnimal(user_id, table)

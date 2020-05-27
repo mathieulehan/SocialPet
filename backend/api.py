@@ -80,13 +80,17 @@ def insert_image():
         CATEGORIES[espece] = CATEGORIES[espece] + 1
 
     espece = max(CATEGORIES, key=CATEGORIES.get)
-
+    print(espece)
     if espece == "chien":
         race = modelRace.my_dog_breed_detector('./img_temp.jpg')
         request.json.setdefault('raceModel', race)
 
+    if espece == "chat2":
+        race = modelRace.my_cat_breed_detector('./img_temp.jpg')
+        request.json.setdefault('raceModel', race)
+
     # item = database.storeImagePet(image_base64_utf8, espece, request.json)
-    item = database.storeMultiImagePet(img_base64, espece, request.json)
+    item = database.storeMultiImagePet(img_base64, espece, request.json, 1)
     return jsonify({'item': item}), 201
 
 
@@ -100,14 +104,16 @@ def get_perdu():
     get_status()
 
     image_base64 = request.json['images'][0]
-    image_base64 = image_base64.encode("utf-8")
-
-    image_64_decode = base64.decodestring(image_base64)
+    image_base64_utf8 = image_base64.encode("utf-8")
+    image_base64.append(image_base64_utf8)
+    image_64_decode = base64.decodestring(image_base64_utf8)
     image_result = open('./img_temp.jpg', 'wb')
     image_result.write(image_64_decode)
 
     espece = model.get_espece('./img_temp.jpg')
     result = database.getImage(espece)
+
+    database.storeMultiImagePet(image_base64, espece, request.json, 0)
 
     return jsonify({'images': result}), 201
 
