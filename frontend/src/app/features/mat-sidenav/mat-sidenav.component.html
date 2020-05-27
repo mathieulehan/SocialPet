@@ -6,12 +6,30 @@
 <mat-sidenav-container class="social-pet-body" autosize>
   <mat-sidenav #sidenav [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'" class="example-container" opened role="navigation">
     <mat-list>
-      <mat-list-item><button mat-button color="primary" [routerLink]="['']" skipLocationChange routerLinkActive="active">Accueil</button></mat-list-item>
-      <mat-list-item *ngIf="userIsConnected"><button mat-button color="primary" [routerLink]="['/search']" skipLocationChange routerLinkActive="active">J'ai trouvé un animal</button></mat-list-item>
-      <mat-list-item *ngIf="userIsConnected"><button mat-button color="primary" [routerLink]="['/submit']" skipLocationChange routerLinkActive="active">Enregistrer mon animal</button></mat-list-item>
-      <mat-list-item><button mat-button color="primary" [routerLink]="['/about']" skipLocationChange routerLinkActive="active">Qui sommes-nous ?</button></mat-list-item>
-      <mat-list-item *ngIf="userIsConnected"><button mat-button color="primary" [routerLink]="['/images']" skipLocationChange routerLinkActive="active">Mes images</button></mat-list-item>
-      <mat-list-item *ngIf="userIsConnected"><button mat-button color="primary" [routerLink]="['/rgpd']" skipLocationChange routerLinkActive="active">(TEMP) RGPD</button></mat-list-item>
+      <mat-list-item>
+        <span class="material-icons">home</span>
+        <button mat-button color="primary" [routerLink]="['']" skipLocationChange routerLinkActive="active">Accueil</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="userIsConnected">
+        <span class="material-icons">find_in_page</span>
+        <button mat-button color="primary" [routerLink]="['/search']" skipLocationChange routerLinkActive="active">J'ai trouvé un animal</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="userIsConnected">
+        <span class="material-icons">save</span>
+        <button mat-button color="primary" [routerLink]="['/submit']" skipLocationChange routerLinkActive="active">Enregistrer mon animal</button>
+      </mat-list-item>
+      <mat-list-item>
+        <span class="material-icons">group</span>
+        <button mat-button color="primary" [routerLink]="['/about']" skipLocationChange routerLinkActive="active">Qui sommes-nous ?</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="userIsConnected">
+        <span class="material-icons">images</span>
+        <button mat-button color="primary" [routerLink]="['/images']" skipLocationChange routerLinkActive="active">Mes images</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="userIsConnected">
+        <span class="material-icons">lock</span>
+        <button mat-button color="primary" [routerLink]="['/rgpd']" skipLocationChange routerLinkActive="active">(TEMP) RGPD</button>
+      </mat-list-item>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content class="social-pet-content" role="main">
