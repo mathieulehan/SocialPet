@@ -54,3 +54,13 @@ def loadRaceCat():
 
     return raceCat
 
+
+def loadRaceHorse():
+    fichier = open("./model/BreedHorse.txt", "r")
+    raceHorse = []
+
+    for ligne in fichier:
+        raceHorse.append(ligne)
+
+    return raceHorse
+
