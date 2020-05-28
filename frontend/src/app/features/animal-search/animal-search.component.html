@@ -21,7 +21,7 @@
       <mat-icon matSuffix>pets</mat-icon>
     </mat-form-field>
     <br>
-    <h4>L'animal possède ces :</h4>
+    <span>L'animal possède ces :</span>
     <mat-form-field class="example-full-width">
       <mat-label>Couleur(s)</mat-label>
       <mat-select formControlName="colorControl" multiple>
@@ -39,7 +39,7 @@
       </mat-select>
       <mat-icon matSuffix>invert_colors</mat-icon>
     </mat-form-field>
-    <h4>Photos de l'animal en question : <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)"></h4>
+    <span>Photos de l'animal en question : <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)"></span>
     <div>
       <img *ngFor="let blob of generatedBlobsDecoded" width="32" [src]="blob" alt="blob">
     </div>

@@ -7,7 +7,16 @@ mat-card {
   margin: 3rem;
 }
 
-p, li {
+a {
+  color: black;
+  text-decoration: none;
+}
+
+li {
+  line-height: 2rem;
+}
+
+p, li, a, span:not(.mat-button-wrapper), input {
   font-size: 20px;
 }
 
