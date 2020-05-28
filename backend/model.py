@@ -31,8 +31,8 @@ def load_image(filename):
 def get_espece(file):
     # load the image
     img = load_image(file)
-    # load model
-    model = load_model('./model/vgg19_5species75train25')
+    # load models
+    model = load_model('./models/vgg19_5species75train25')
     # predict the class
     result = model.predict(img)
 

@@ -1,7 +1,7 @@
 import jwt
 import datetime
 import api
-
+from models import load_model_cat, load_model_dog, load_model_horse
 
 def encode_auth_token(user_id):
     try:
@@ -36,7 +36,7 @@ def decode_auth_token(auth_token):
 
 
 def loadRaceDog():
-    fichier = open("./model/BreedDog.txt", "r")
+    fichier = open("./models/BreedDog.txt", "r")
     raceChien = []
 
     for ligne in fichier:
@@ -46,7 +46,7 @@ def loadRaceDog():
 
 
 def loadRaceCat():
-    fichier = open("./model/BreedCat.txt", "r")
+    fichier = open("./models/BreedCat.txt", "r")
     raceCat = []
 
     for ligne in fichier:
@@ -56,7 +56,7 @@ def loadRaceCat():
 
 
 def loadRaceHorse():
-    fichier = open("./model/BreedHorse.txt", "r")
+    fichier = open("./models/BreedHorse.txt", "r")
     raceHorse = []
 
     for ligne in fichier:
@@ -64,3 +64,13 @@ def loadRaceHorse():
 
     return raceHorse
 
+
+def getRaceOfSpecie(specie):
+    if specie == "chien":
+        return load_model_dog.my_dog_breed_detector('./img_temp.jpg')
+    if specie == "chat2":
+        return load_model_cat.getCatBreed('./img_temp.jpg')
+    if specie == "cheval":
+        return load_model_horse.getHorseBreed('./img_temp.jpg')
+    if specie == "poule2":
+        return "defaultChickenRace"

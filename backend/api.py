@@ -3,11 +3,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import database
 import model
-import modelRace
-from load_model_horse import getHorseBreed
-from load_model_cat import getCatBreed
 import base64
-import json
 import utils
 import os
 
@@ -82,18 +78,9 @@ def insert_image():
         CATEGORIES[espece] = CATEGORIES[espece] + 1
 
     espece = max(CATEGORIES, key=CATEGORIES.get)
-    print(espece)
-    if espece == "chien":
-        race = modelRace.my_dog_breed_detector('./img_temp.jpg')
-        request.json.setdefault('raceModel', race)
 
-    if espece == "chat2":
-        race = getCatBreed('./img_temp.jpg')
-        request.json.setdefault('raceModel', race)
-
-    if espece == "cheval":
-        race = getHorseBreed('./img_temp.jpg')
-        request.json.setdefault('raceModel', race)
+    race = utils.getRaceOfSpecie(espece)
+    request.json.setdefault('raceModel', race)
 
     # item = database.storeImagePet(image_base64_utf8, espece, request.json)
     item = database.storeMultiImagePet(img_base64, espece, request.json, 1)
@@ -109,17 +96,22 @@ def get_perdu():
     # Vérification de l'autorisation
     get_status()
 
-    image_base64 = request.json['images'][0]
-    image_base64_utf8 = image_base64.encode("utf-8")
+    image_base64 = request.json['images']
+    image_base64_utf8 = image_base64[0].encode("utf-8")
     image_base64.append(image_base64_utf8)
     image_64_decode = base64.decodestring(image_base64_utf8)
     image_result = open('./img_temp.jpg', 'wb')
     image_result.write(image_64_decode)
 
     espece = model.get_espece('./img_temp.jpg')
-    result = database.getImage(espece)
+
+    race = utils.getRaceOfSpecie(espece)
+    request.json.setdefault('raceModel', race)
 
     database.storeMultiImagePet(image_base64, espece, request.json, 0)
+
+    # get similar animals
+    result = database.getImage(espece, race)
 
     return jsonify({'images': result}), 201
 

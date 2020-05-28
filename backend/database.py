@@ -156,10 +156,16 @@ def storeMultiImagePet(images, table, data, isOwner):
 
 
 # return all picture for one table store in the database
-def getImage(table):
+def getImage(table, race):
+
+    raceId = retrieveRace(race)
+
     db = MySQLdb.connect("cl1-sql7.phpnet.org", "univcergy22", "Socialpet1903!!", "univcergy22")
-    sql = "SELECT * FROM " + table + " as tab INNER JOIN socialpet_users ON tab.idUser = socialpet_users.id " 
+    sql = "SELECT * FROM " + table + " as tab JOIN socialpet_users ON tab.idUser = socialpet_users.id " \
+                                     "JOIN race ON tab.idRace = race.id" \
+          + " WHERE tab.uploadedByOwner = TRUE AND tab.idRace = " + str(raceId)
     cursor = db.cursor()
+    print(sql)
     resultExport = []
     try:
         cursor.execute(sql)
@@ -170,24 +176,32 @@ def getImage(table):
             sql += "INNER JOIN couleur_image as c1 ON tab.id = c1.idCouleur AND c1.idImage = " + str(row[0]) + " AND c1.idTable = \""+ table + "\""
             cursor.execute(sql)
             color_Result = cursor.fetchall()
-            color = []
-
-            for c in color_Result :
-                color.append(c[1])
+            colors = []
+            for color in color_Result :
+                colors.append(color[1])
 
             user = {
                 "id": row[3],
+                "name": row[8],
+                "lastname": row[9],
                 "email": row[10]
+            }
+
+            race = {
+                "id": row[13],
+                "race": row[14]
             }
 
             item = {
                 "id": row[0],
                 "img": row[1],
-                "table": table,
+                "specie": table,
+                "race": race,
                 "created_at" : row[6],
                 "user": user,
-                "colors": color
+                "colors": colors
             }
+            print(row)
             resultExport.append(item)
 
     except MySQLdb.Error as e:
