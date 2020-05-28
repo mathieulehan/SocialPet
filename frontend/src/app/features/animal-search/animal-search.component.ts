@@ -21,22 +21,17 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
     'Un algorithme va analyse les images et retrouver les animaux y ressemblant le plus. ' +
     'Vous aurez le dernier mot et pourrez sélectionner le bon animal parmi ceux qui vous seront proposés par SocialPet.';
   species: string[];
-  colors: string[];
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
   uploadedAnimal = this.fb.group({
-    raceControl: [''],
-    specieControl: ['', Validators.required],
-    colorControl: [''],
-    photosControl: ['', Validators.required],
-    rgpdControl: [false, Validators.requiredTrue]
+    race: [''],
+    specie: ['', Validators.required],
+    colors: [''],
+    images: ['', Validators.required],
+    rgpd: [false, Validators.requiredTrue]
   });
   imagesData: ImageFromBack[];
   base64Str = 'data:image/jpg;base64,';
-  @ViewChild('container') theContainer;
-  columnNum = 3;
-  tileSize = 230;
-
   constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, private imageService: ImageService,
               dialog: MatDialog, snackBar: MatSnackBar, private authService: AuthService, private rgpdDialog: MatDialog) {
     super(snackBar, dialog);
@@ -47,20 +42,24 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
   }
 
   searchAnimal() {
-    const newAnimal = new Image();
+    const newAnimal: Image = this.uploadedAnimal.value;
+    newAnimal.images = [];
     for (const blob of this.generatedBlobs) {
       newAnimal.images.push(blob);
     }
     this.authService.ensureAuthenticated(localStorage.getItem('ACCESS_TOKEN')).then(response => {
         const user = response.data;
         newAnimal.email = user.email;
-        newAnimal.colors = this.color.value;
         this.showSpinner();
         this.imageService.getRelatedImages(newAnimal).subscribe(res => {
           this.imagesData = res.images;
           this.sanitizeImages();
           this.hideSpinner();
-          this.openSnackBar('Voici les animaux pouvant ressembler', 'OK');
+          if (this.imagesData.length !== 0) {
+            this.openSnackBar('Voici les animaux pouvant ressembler', 'OK');
+          } else {
+            this.openSnackBar('Aucun animal enregistré ne ressemble à celui que vous avez renseigné...', 'Zut');
+          }
         },
       error => {
         this.hideSpinner();
@@ -69,20 +68,20 @@ export class AnimalSearchComponent extends SnackBarAbleComponent implements OnIn
       });
   }
 
-  get photosControl() {
-    return this.uploadedAnimal.get('photosControl');
+  get images() {
+    return this.uploadedAnimal.get('images');
   }
 
-  get color() {
-    return this.uploadedAnimal.get('colorControl');
+  get colors() {
+    return this.uploadedAnimal.get('colors');
   }
 
-  get rgpdControl() {
-    return this.uploadedAnimal.get('rgpdControl');
+  get rgpd() {
+    return this.uploadedAnimal.get('rgpd');
   }
 
-  get specieControl() {
-    return this.uploadedAnimal.get('specieControl');
+  get specie() {
+    return this.uploadedAnimal.get('specie');
   }
 
   changeListener($event): void {

@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>{{ title }}</mat-card-title><br>
+  <mat-card-title i18n>{{ title }}</mat-card-title><br>
   <mat-card-content>
     <p> {{ speech }}</p>
   </mat-card-content>
@@ -7,24 +7,24 @@
 <mat-card>
   <form class="example-form" [formGroup]="uploadedAnimal" (ngSubmit)="searchAnimal()">
     <br>
-    <mat-radio-group  formControlName="specieControl">
+    <mat-radio-group  formControlName="specie">
       <mat-radio-button class="specie-checkbox" value="chien"><img class="specie-checkbox-image" src="../../../assets/dog.jpg" alt="dog"></mat-radio-button>
       <mat-radio-button class="specie-checkbox" value="chat"><img class="specie-checkbox-image" src="../../../assets/cat.jpg" alt="cat"></mat-radio-button>
       <mat-radio-button class="specie-checkbox" value="lapin"><img class="specie-checkbox-image" src="../../../assets/rabbit.jpg" alt="rabbit"></mat-radio-button>
       <mat-radio-button class="specie-checkbox" value="poule"><img class="specie-checkbox-image" src="../../../assets/chicken.png" alt="chicken"></mat-radio-button>
       <mat-radio-button class="specie-checkbox" value="cheval"><img class="specie-checkbox-image" src="../../../assets/horse.jpg" alt="horse"></mat-radio-button>
     </mat-radio-group>
-    <span *ngIf="specieControl.invalid" class="mat-error">Vous devez renseigner l'espèce de l'animal</span>
+    <span *ngIf="specie.invalid" class="mat-error">Vous devez renseigner l'espèce de l'animal</span>
     <mat-form-field class="example-full-width">
       <mat-label>Race (si connue)</mat-label>
-      <input matInput formControlName="raceControl">
+      <input matInput formControlName="race">
       <mat-icon matSuffix>pets</mat-icon>
     </mat-form-field>
     <br>
     <span>L'animal possède ces :</span>
     <mat-form-field class="example-full-width">
       <mat-label>Couleur(s)</mat-label>
-      <mat-select formControlName="colorControl" multiple>
+      <mat-select formControlName="colors" multiple>
         <mat-option style="color: white" value="Blanc" >Blanc</mat-option>
         <mat-option style="color: brown" value="Marron" >Marron</mat-option>
         <mat-option style="color: grey" value="Gris" >Gris</mat-option>
@@ -39,31 +39,33 @@
       </mat-select>
       <mat-icon matSuffix>invert_colors</mat-icon>
     </mat-form-field>
-    <span>Photos de l'animal en question : <input type="file" formControlName="photosControl" multiple (change)="changeListener($event)"></span>
+    <span>Photos de l'animal en question : <input type="file" formControlName="images" multiple (change)="changeListener($event)"></span>
     <div>
       <img *ngFor="let blob of generatedBlobsDecoded" width="32" [src]="blob" alt="blob">
     </div>
-    <span *ngIf="photosControl.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
+    <span *ngIf="images.invalid" class="mat-error">Au moins une photo de l'animal doit être envoyée</span>
     <br>
-    <mat-checkbox formControlName="rgpdControl">J'accepte que SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
+    <mat-checkbox formControlName="rgpd">J'accepte que SocialPet traite les données recueillies pour enregistrer des animaux et permettre de faciliter les recherches de ces derniers.
       <br>Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la page "RGPD" de ce site ou cliquez sur le bouton ci-dessous.</mat-checkbox>
-    <span *ngIf="rgpdControl.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
+    <span *ngIf="rgpd.invalid" class="mat-error">Vous devez accepter le traitement de vos images.</span>
     <br>
     <button type="button" color="primary" mat-raised-button (click)="openRgpdDialog()">En savoir plus</button>
     <br><br>
     <button type="submit" mat-raised-button color="primary" [disabled]="!uploadedAnimal.valid">Rechercher le propriétaire</button>
   </form>
 </mat-card>
-<span *ngIf="imagesData">Voici les animaux pouvant correspondre</span>
 <mat-card *ngFor="let image of imagesData">
-  <mat-card>
-    <mat-card-title>
-      <span>{{image.specie}}</span><br>
+  <mat-card-title>
+      <span>{{image.specie | uppercase}}, {{image.race.race}}</span><br>
     </mat-card-title>
-    <mat-card-subtitle>
-      <span>{{image.race.race}}, </span>
-      <span *ngFor="let color of image.colors">{{color}}</span><br>
-    </mat-card-subtitle>
+  <mat-card-content>
     <img mat-card-image [src]="image.sanitizedPath" alt="{{image.id}}">
-  </mat-card>
+  </mat-card-content>
+  <mat-card-subtitle>
+      <span>Propriétaire : {{image.user.name}} {{image.user.lastname}} </span><br>
+      <span>Animal enregistré le : {{image.created_at | date:'medium'}}</span>
+    </mat-card-subtitle>
+  <mat-card-actions>
+    <a href="mailto:{{image.user.email}}">Contacter le propriétaire</a>
+  </mat-card-actions>
 </mat-card>

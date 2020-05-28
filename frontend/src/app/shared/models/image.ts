@@ -21,6 +21,7 @@ export class ImageFromBack {
   user: User;
   colors: Color[];
   race: Race;
+  raceUser: Race;
   img: string;
   specie: string;
   isOwner: number;

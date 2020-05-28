@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {CommonModule, registerLocaleData} from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 import { RouterModule } from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UploadFormComponent} from './upload-form/upload-form.component';
@@ -38,6 +39,7 @@ import {RgpdComponent} from './rgpd/rgpd.component';
 import {RgpdDialogComponent} from './rgpd-dialog/rgpd-dialog.component';
 import {OwlModule} from 'ngx-owl-carousel';
 import {MatRadioModule} from '@angular/material/radio';
+registerLocaleData(localeFr, 'fr-FR');
 
 @NgModule({
     imports: [
@@ -73,7 +75,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatToolbarComponent,
     MatSidenavComponent
   ],
-  providers: [AuthService],
+  providers: [AuthService, { provide: LOCALE_ID, useValue: 'fr-FR' }, ],
   entryComponents: [ProgressSpinnerDialogComponent],
 })
 export class FeaturesModule { }

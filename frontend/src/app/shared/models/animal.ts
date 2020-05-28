@@ -10,6 +10,7 @@ export class Animal {
     this.sanitizedPaths = [];
     this.user = image.user;
     this.race = image.race;
+    this.raceUser = image.raceUser;
     this.specie = image.specie;
     this.isOwner = image.isOwner;
     this.created_at = image.created_at;
@@ -20,6 +21,7 @@ export class Animal {
   user: User;
   colors: Color[];
   race: Race;
+  raceUser: Race;
   specie: string;
   isOwner: number;
   created_at: Date;

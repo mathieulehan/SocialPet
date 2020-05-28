@@ -20,7 +20,6 @@ export class UploadFormComponent extends SnackBarAbleComponent implements OnInit
   speech = 'Les images que vous allez nous transmettre seront analysées par un algorithme qui déterminera les caractéristiques de votre animal.' +
     ' Ces informations seront ensuite utilisées dans le cas où votre animal est retrouvé par un internaute. Ce dernier sera en mesure de vous contacter.';
   species: string[];
-  colorsStr: string[];
   image: string | ArrayBuffer;
   generatedBlobs: string[] = [];
   generatedBlobsDecoded: string[] = [];
