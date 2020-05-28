@@ -5,6 +5,7 @@ import database
 import model
 import modelRace
 from load_model_horse import getHorseBreed
+from load_model_cat import getCatBreed
 import base64
 import json
 import utils
@@ -87,7 +88,7 @@ def insert_image():
         request.json.setdefault('raceModel', race)
 
     if espece == "chat2":
-        race = modelRace.my_cat_breed_detector('./img_temp.jpg')
+        race = getCatBreed('./img_temp.jpg')
         request.json.setdefault('raceModel', race)
 
     if espece == "cheval":
