@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import {User} from '../models/user';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private BASE_URL = 'http://localhost:5000/api/auth';
+  private BASE_URL = environment.apiUrl + 'auth';
   public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
@@ -15,12 +16,12 @@ export class AuthService {
   }
 
   login(user: User): Promise<any> {
-    const url = `${this.BASE_URL}/login`;
+    const url = `${this.BASE_URL}login`;
     return this.http.post(url, user).toPromise();
   }
 
   register(user: User): Promise<any> {
-    const url = `${this.BASE_URL}/register`;
+    const url = `${this.BASE_URL}register`;
     return this.http.post(url, user).toPromise();
   }
 
@@ -34,7 +35,7 @@ export class AuthService {
   }
 
   ensureAuthenticated(token): Promise<any> {
-    const url = `${this.BASE_URL}/status`;
+    const url = `${this.BASE_URL}status`;
     const reqHeaders: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
